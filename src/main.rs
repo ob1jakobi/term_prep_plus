@@ -3,12 +3,13 @@ use crate::exam::Exam;
 mod exam {
     use std::collections::HashSet;
     use std::{env, fs};
+    use std::cmp::min;
     use std::fs::File;
     use std::hash::{Hash, Hasher};
     use std::io::{BufReader, ErrorKind, stdin, stdout, Write};
     use std::path::PathBuf;
-    use serde::{Serialize, Deserialize, Deserializer};
-    use serde_json::{Result, Value};
+    use serde::{Serialize, Deserialize};
+    // use serde::{Serialize, Deserialize, Deserializer};
 
     const ASSETS_DIR: &str = "assets";
 
@@ -23,6 +24,7 @@ mod exam {
         prompt: String,
         choices: HashSet<String>,
         answer: String,
+        explanation: String,
         refs: Vec<String>,
     }
 
@@ -31,6 +33,7 @@ mod exam {
             self.prompt == other.prompt
             && self.choices == other.choices
             && self.answer == other.answer
+            && self.explanation == other.explanation
             && self.refs == other.refs
         }
     }
@@ -41,6 +44,7 @@ mod exam {
             self.prompt.hash(state);
             self.choices.iter().for_each(|choice| choice.hash(state));
             self.answer.hash(state);
+            self.explanation.hash(state);
             self.refs.hash(state);
         }
     }
@@ -99,6 +103,7 @@ mod exam {
         }
 
         fn show_available_exams(cwd: &PathBuf) -> bool {
+            let mut result: bool = false;
             let assets_dir = cwd.join(ASSETS_DIR);
             let mut count: u8 = 1;
             match fs::read_dir(assets_dir) {
@@ -111,20 +116,18 @@ mod exam {
                                     if exam_name_str.ends_with(".json") {
                                         println!("\t{}.) {}", count, exam_name_str);
                                         count += 1;
-                                        return true;
+                                        result = true;
                                     }
                                 }
                             }
                         }
                     }
-                    println!("\tUnable to print exam files...");
-                    return false;
                 },
                 Err(_) => {
                     println!("\tThere are no available exams to choose from...");
-                    false
                 },
             }
+            result
         }
 
         fn input(prompt: &str) -> String {
@@ -153,14 +156,65 @@ mod exam {
                 }
             }
         }
+
+        pub fn quiz(&self) {
+            let mut num_correct = 0;
+            println!("\n\nExam selected: {}", &self.name);
+            let num_questions: usize = loop {
+                match Self::input("How many questions would you like to review? ").parse::<usize>() {
+                    Ok(num) if num > 0 => break min(num, self.questions.len()),
+                    _ => println!("Please enter a positive number!"),
+                }
+            };
+            for question in self.questions.iter().take(num_questions) {
+                println!("\n{}", question.prompt);
+
+                let prefix: Vec<&str> = vec!["a.) ", "b.) ", "c.) ", "d.) "];
+                let choices: Vec<String> = question.choices
+                    .iter()
+                    .enumerate()
+                    .map(|(ind, choice)| {
+                        println!("\t{}{}", prefix[ind], choice);
+                        choice.to_string()
+                    }).collect::<Vec<String>>();
+
+                let user_answer_ind = loop {
+                    let user_ans = Self::input("Enter answer ('a', 'b', 'c', 'd'): ");
+                    match user_ans.to_ascii_lowercase().as_str() {
+                        "a" => break 0,
+                        "b" => break 1,
+                        "c" => break 2,
+                        "d" => break 3,
+                        _ => println!("Please make a valid selection!"),
+                    }
+                };
+
+                if choices[user_answer_ind].eq_ignore_ascii_case(&question.answer) {
+                    println!("\nCorrect!");
+                    num_correct += 1;
+                } else {
+                    println!("\nIncorrect...");
+                }
+
+                println!("Explanation: {}", question.explanation);
+                println!("Reference(s):");
+                question.refs.iter().for_each(|r| println!("\t{}", r));
+            }
+            if !Self::input("Play again (Y/n)? ").eq_ignore_ascii_case("y") {
+                println!("\nYou got {}/{} questions correct.", num_correct, num_questions);
+                println!("Great progress studying!");
+            } else {
+                self.quiz();
+            }
+        }
     }
 
 }
 
 fn main() {
     if let Some(exam) = Exam::new() {
-        println!("Successfully created an exam!\n{:#?}", exam);
+        exam.quiz();
     } else {
-        println!("Unable to create the exam...");
+        println!("Unable to quiz...");
     }
 }
