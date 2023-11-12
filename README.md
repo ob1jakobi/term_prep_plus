@@ -19,7 +19,7 @@ Prep Plus:
 ### `Exam`
 The following is the general format that the high-level `Exam` must use; it's essentially the
 name of the exam (for example, `"CompTIA Network+ (N10-008)"`) and a list of `question`s:
-```json
+```
 {
   "name": "Exam_Name",
   "questions": [
