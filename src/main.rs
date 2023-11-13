@@ -9,16 +9,18 @@ mod exam {
     use std::io::{BufReader, ErrorKind, stdin, stdout, Write};
     use std::path::PathBuf;
     use serde::{Serialize, Deserialize};
-    // use serde::{Serialize, Deserialize, Deserializer};
 
+    /// The default directory for storing JSON-formatted exam files
     const ASSETS_DIR: &str = "assets";
 
+    /// High-level structure representing an Exam; has a name and a series of questions
     #[derive(Debug, Deserialize, Serialize)]
     pub struct Exam {
         name: String,
         questions: HashSet<Question>,
     }
 
+    /// The questions that comprise an Exam
     #[derive(Debug, Deserialize, Serialize)]
     pub struct Question {
         prompt: String,
@@ -28,6 +30,9 @@ mod exam {
         refs: Vec<String>,
     }
 
+    /// The next three are required to utilize Questions as a HashSet; this helps ensure that
+    /// the sequence of questions are not revealed in the same sequence (as would be the case if
+    /// the Exam struct utilized a Vec<Question>)
     impl PartialEq<Self> for Question {
         fn eq(&self, other: &Self) -> bool {
             self.prompt == other.prompt
@@ -50,6 +55,14 @@ mod exam {
     }
 
     impl Exam {
+        /// Constructs an optional `Exam` since the methods used to construct an `Exam` might not
+        /// succeed.
+        ///
+        /// # Panics
+        ///
+        /// In the event that the program cannot obtain the current working directory to establish
+        /// an `assets` directory - as well as pull JSON-formatted exam files, the program will
+        /// panic.
         pub fn new() -> Option<Self> {
             // Get the current working directory
             let cwd: PathBuf = env::current_dir().expect("Unable to get cwd");
@@ -61,6 +74,19 @@ mod exam {
             }
         }
 
+        /// Helper function that ensures the creation of the default `assets` directory for storing
+        /// JSON-formatted exam files.
+        ///
+        /// # Argument
+        ///
+        /// * `cwd` - a reference to the current working directory as a `PathBuf` reference.
+        ///
+        /// # Returns
+        ///
+        /// * `bool` - If the `assets` directory already exists, or if the `assets` directory was
+        ///   created without any errors, then the program will print out the applicable message and
+        ///   return `true` - otherwise the program will print an error message to `stderr` and return
+        ///   `false`.
         fn create_asset_dir(cwd: &PathBuf) -> bool {
             let assets_dir = cwd.join(ASSETS_DIR);
             match fs::create_dir(assets_dir) {
@@ -80,7 +106,6 @@ mod exam {
         }
 
         fn get_exam(cwd: &PathBuf) -> Option<Exam> {
-            println!("Available exam files include:");
             if Self::show_available_exams(&cwd) {
                 let exam_filename: String = Self::input_confirm("Enter filename of exam: ");
                 let mut exam_file_path = PathBuf::from(cwd);
@@ -103,31 +128,40 @@ mod exam {
         }
 
         fn show_available_exams(cwd: &PathBuf) -> bool {
-            let mut result: bool = false;
-            let assets_dir = cwd.join(ASSETS_DIR);
-            let mut count: u8 = 1;
-            match fs::read_dir(assets_dir) {
-                Ok(exams) => {
-                    for exam in exams {
-                        if let Ok(exam) = exam {
-                            let exam_path = exam.path();
-                            if let Some(exam_name) = exam_path.file_name() {
-                                if let Some(exam_name_str) = exam_name.to_str() {
-                                    if exam_name_str.ends_with(".json") {
-                                        println!("\t{}.) {}", count, exam_name_str);
-                                        count += 1;
-                                        result = true;
-                                    }
-                                }
+            let assets_dir: PathBuf = cwd.join(ASSETS_DIR);
+            println!("Available exams files include:");
+            if let Ok(entries) = fs::read_dir(&assets_dir) {
+                let exam_files: Vec<PathBuf> = entries
+                    .filter_map(|entry| {
+                        if let Ok(entry) = entry {
+                            let path = entry.path();
+                            if path.is_file() && path.extension().map_or(false, |ext| ext == "json") {
+                                Some(path)
+                            } else {
+                                None
+                            }
+                        } else {
+                            None
+                        }
+                    })
+                    .collect();
+                if exam_files.is_empty() {
+                    println!("\tThere are no exam files available in the {} directory...", ASSETS_DIR);
+                    false
+                } else {
+                    for (index, exam) in exam_files.iter().enumerate() {
+                        if let Some(exam_file) = exam.file_name() {
+                            if let Some(exam_file_name) = exam_file.to_str() {
+                                println!("\t{}.) {:?}", index + 1, exam_file_name);
                             }
                         }
                     }
-                },
-                Err(_) => {
-                    println!("\tThere are no available exams to choose from...");
-                },
+                    true
+                }
+            } else {
+                println!("\tThere was an error accessing the {} directory", ASSETS_DIR);
+                false
             }
-            result
         }
 
         fn input(prompt: &str) -> String {
@@ -157,36 +191,42 @@ mod exam {
             }
         }
 
-        pub fn quiz(&self) {
-            let mut num_correct = 0;
+        /// Method for studying questions from an exam in the `assets` directory. This will ask the
+        /// user how many questions they'd like to study. If the user enters a number of questions
+        /// that exceeds the number of questions in the exam JSON file, then the entire contents of
+        /// the exam file will be studied. After the study session has completed, a ratio of the
+        /// number of questions correctly answered to the number of questions studied will be
+        /// displayed.
+        pub fn study(&self) {
+            let mut num_correct: u8 = 0;
             println!("\n\nExam selected: {}", &self.name);
+
             let num_questions: usize = loop {
                 match Self::input("How many questions would you like to review? ").parse::<usize>() {
                     Ok(num) if num > 0 => break min(num, self.questions.len()),
                     _ => println!("Please enter a positive number!"),
                 }
             };
+
             for question in self.questions.iter().take(num_questions) {
                 println!("\n{}", question.prompt);
 
-                let prefix: Vec<&str> = vec!["a.) ", "b.) ", "c.) ", "d.) "];
                 let choices: Vec<String> = question.choices
                     .iter()
                     .enumerate()
-                    .map(|(ind, choice)| {
-                        println!("\t{}{}", prefix[ind], choice);
+                    .map(|(index, choice)| {
+                        println!("{}.) {}", (index as u8 + b'a') as char, choice);
                         choice.to_string()
-                    }).collect::<Vec<String>>();
+                    }).collect();
 
                 let user_answer_ind = loop {
-                    let user_ans = Self::input("Enter answer ('a', 'b', 'c', 'd'): ");
-                    match user_ans.to_ascii_lowercase().as_str() {
-                        "a" => break 0,
-                        "b" => break 1,
-                        "c" => break 2,
-                        "d" => break 3,
-                        _ => println!("Please make a valid selection!"),
+                    let user_ans: String = Self::input("Enter answer (e.g., 'a', 'b', 'c'): ");
+                    if let Some(index) = user_ans.chars().next().map(|c| (c as u8 - b'a') as usize) {
+                        if index < choices.len() {
+                            break index;
+                        }
                     }
+                    println!("Please make a valid selection!");
                 };
 
                 if choices[user_answer_ind].eq_ignore_ascii_case(&question.answer) {
@@ -200,11 +240,13 @@ mod exam {
                 println!("Reference(s):");
                 question.refs.iter().for_each(|r| println!("\t{}", r));
             }
+
+            // Whether or not to play again
             if !Self::input("Play again (Y/n)? ").eq_ignore_ascii_case("y") {
                 println!("\nYou got {}/{} questions correct.", num_correct, num_questions);
                 println!("Great progress studying!");
             } else {
-                self.quiz();
+                self.study();
             }
         }
     }
@@ -213,8 +255,8 @@ mod exam {
 
 fn main() {
     if let Some(exam) = Exam::new() {
-        exam.quiz();
+        exam.study();
     } else {
-        println!("Unable to quiz...");
+        println!("Unable to study...");
     }
 }

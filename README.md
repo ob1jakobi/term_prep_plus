@@ -30,7 +30,7 @@ name of the exam (for example, `"CompTIA Network+ (N10-008)"`) and a list of `qu
 
 ### `Question`
 Each `Exam` consists of multiple questions, where each `question` has a `prompt` (the question
-to be answered); the `choices` or options for multiple-choice answers; the `answer` (the correct
+to be answered); the 4 `choices` or options for multiple-choice answers; the `answer` (the correct
 choice from `choices` - this should be formatted exactly the same as the one in `choices`); the
 `refs` or list of references so the user can refer to those if they get it incorrect.
 ```json
@@ -56,6 +56,7 @@ choice from `choices` - this should be formatted exactly the same as the one in 
         "Physical"
       ],
       "answer": "Physical",
+      "explanation": "The 1st layer of the OSI model is the Physical layer",
       "refs": [
         "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 4-8.",
         "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-51."
@@ -70,6 +71,7 @@ choice from `choices` - this should be formatted exactly the same as the one in 
         "Transport"
       ],
       "answer": "Data Link",
+      "explanation": "The 2nd layer of the OSI model is the Data Link layer",
       "refs": [
         "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 4-8.",
         "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-51."
