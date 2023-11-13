@@ -36,8 +36,9 @@ choice from `choices` - this should be formatted exactly the same as the one in 
 ```json
 {
   "prompt": "What is the capital of France?",
-  "choices": ["Berlin", "Paris", "London", "France"],
+  "choices": ["Berlin", "Paris", "London", "Rome"],
   "answer": "Paris",
+  "explanation": "The capital of France is Paris. Berlin is the capital of Germany; London is the capital of England; Rome is the capital of Italy.",
   "refs": ["https://en.wikipedia.org/wiki/Paris"]
 }
 ```
