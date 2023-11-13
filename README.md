@@ -29,10 +29,12 @@ name of the exam (for example, `"CompTIA Network+ (N10-008)"`) and a list of `qu
 ```
 
 ### `Question`
-Each `Exam` consists of multiple questions, where each `question` has a `prompt` (the question
-to be answered); the 4 `choices` or options for multiple-choice answers; the `answer` (the correct
-choice from `choices` - this should be formatted exactly the same as the one in `choices`); the
-`refs` or list of references so the user can refer to those if they get it incorrect.
+Each `Exam` consists of multiple questions, where each `question` has the following:
+* `prompt` - the question to be answered;
+* `choices` - options for multiple-choice answers. There can be any number of choices, but preferably &le; 26 because
+   each choice is prefixed with a letter;
+* `answer` - the correct choice from `choices`. This should be formatted exactly the same as the one in `choices`;
+* `refs` - or list of references so the user can refer to those if they get it incorrect.
 ```json
 {
   "prompt": "What is the capital of France?",
