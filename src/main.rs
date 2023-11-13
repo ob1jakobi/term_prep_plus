@@ -106,6 +106,57 @@ mod exam {
         }
 
         fn get_exam(cwd: &PathBuf) -> Option<Exam> {
+            println!("Checking available exam files in the default location...");
+            // Create an iterable of all the applicable exam files in assets
+            if let Some(exams) = Self::collect_available_exams(cwd) {
+                if exams.is_empty() {
+                    println!("\tThere are no available exams in the default {} directory.", ASSETS_DIR);
+                    None
+                } else {
+                    println!("Please choose one of the following exams:");
+                    for (index, exam_path) in exams.iter().enumerate() {
+                        if let Some(file_name) = exam_path.file_name() {
+                            if let Some(exam_file_name) = file_name.to_str() {
+                                println!("\t{}.) {}", index + 1, exam_file_name);
+                            }
+                        }
+                    }
+                    // TODO: Get the user's input and return the option of the exam selected
+                }
+            } else {
+                println!("Unable to collect the exams from the default {} directory.", ASSETS_DIR);
+                None
+            }
+        }
+
+        fn collect_available_exams(cwd: &PathBuf) -> Option<Vec<PathBuf>> {
+            let assets_dir: PathBuf = cwd.join(ASSETS_DIR);
+            if let Ok(entries) = fs::read_dir(&assets_dir) {
+                let exam_files: Vec<PathBuf> = entries
+                    .filter_map(|entry| {
+                        match entry {
+                            Ok(entry) => {
+                                let path = entry.path();
+                                if path.is_file() && path.extension().map_or(false, |ext| ext == "json") {
+                                    Some(path)
+                                } else {
+                                    None
+                                }
+                            },
+                            _ => None
+                        }
+                    })
+                    .collect();
+                Some(exam_files)
+            } else {
+                println!("\tThere was an error accessing the {} directory...", ASSETS_DIR);
+                None
+            }
+        }
+
+
+        /*
+        fn get_exam(cwd: &PathBuf) -> Option<Exam> {
             if Self::show_available_exams(&cwd) {
                 let exam_filename: String = Self::input_confirm("Enter filename of exam: ");
                 let mut exam_file_path = PathBuf::from(cwd);
@@ -163,6 +214,7 @@ mod exam {
                 false
             }
         }
+        */
 
         fn input(prompt: &str) -> String {
             let mut temp: String = String::new();
