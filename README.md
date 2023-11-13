@@ -34,6 +34,7 @@ Each `Exam` consists of multiple questions, where each `question` has the follow
 * `choices` - options for multiple-choice answers. There can be any number of choices, but preferably &le; 26 because
    each choice is prefixed with a letter;
 * `answer` - the correct choice from `choices`. This should be formatted exactly the same as the one in `choices`;
+* `explanation` - a more detailed explanation of the answer; used to provide additional insight.
 * `refs` - or list of references so the user can refer to those if they get it incorrect.
 ```json
 {
