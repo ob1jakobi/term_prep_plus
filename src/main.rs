@@ -1,5 +1,16 @@
 use crate::exam::Exam;
 
+const LOGO: &str = "
+
+████████╗███████╗██████╗ ███╗   ███╗    ██████╗ ██████╗ ███████╗██████╗     ██████╗ ██╗     ██╗   ██╗███████╗
+╚══██╔══╝██╔════╝██╔══██╗████╗ ████║    ██╔══██╗██╔══██╗██╔════╝██╔══██╗    ██╔══██╗██║     ██║   ██║██╔════╝
+   ██║   █████╗  ██████╔╝██╔████╔██║    ██████╔╝██████╔╝█████╗  ██████╔╝    ██████╔╝██║     ██║   ██║███████╗
+   ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║    ██╔═══╝ ██╔══██╗██╔══╝  ██╔═══╝     ██╔═══╝ ██║     ██║   ██║╚════██║
+   ██║   ███████╗██║  ██║██║ ╚═╝ ██║    ██║     ██║  ██║███████╗██║         ██║     ███████╗╚██████╔╝███████║
+   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝    ╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝         ╚═╝     ╚══════╝ ╚═════╝ ╚══════╝
+
+";
+
 mod exam {
     use std::collections::HashSet;
     use std::{env, fs};
@@ -12,6 +23,14 @@ mod exam {
 
     /// The default directory for storing JSON-formatted exam files
     const ASSETS_DIR: &str = "assets";
+
+    /// Color codes for changing the color of stdout
+    const RED_COLOR_CODE: &str = "\x1b[31m";
+    const BLUE_COLOR_CODE: &str = "\x1b[34m";
+    const GREEN_COLOR_CODE: &str = "\x1b[32m";
+    const YELLOW_COLOR_CODE: &str = "\x1b[33m";
+    const CYAN_COLOR_CODE: &str = "\x1b[36m";
+    const RESET_COLOR_CODE: &str = "\x1b[0m";
 
     /// High-level structure representing an Exam; has a name and a series of questions
     #[derive(Debug, Deserialize, Serialize)]
@@ -55,22 +74,14 @@ mod exam {
     }
 
     impl Exam {
-        /// Constructs an optional `Exam` since the methods used to construct an `Exam` might not
-        /// succeed.
-        ///
-        /// # Panics
-        ///
-        /// In the event that the program cannot obtain the current working directory to establish
-        /// an `assets` directory - as well as pull JSON-formatted exam files, the program will
-        /// panic.
+        /// Attempts to create an Exam if an exam JSON file exists and is properly formatted.
         pub fn new() -> Option<Self> {
-            // Get the current working directory
-            let cwd: PathBuf = env::current_dir().expect("Unable to get cwd");
-            // Create the assets directory (if necessary) and create the Exam object
-            if Self::create_asset_dir(&cwd) {
-                Self::get_exam(&cwd)
-            } else {
-                None
+            match env::current_dir() {
+                Ok(cwd) if Self::create_asset_dir(&cwd) => Self::get_exam(&cwd),
+                _ => {
+                    eprintln!("{}Unable to create Exam{}", RED_COLOR_CODE, RESET_COLOR_CODE);
+                    None
+                },
             }
         }
 
@@ -95,7 +106,7 @@ mod exam {
                     true
                 },
                 Err(e) => {
-                    eprintln!("An error {} occurred...", e);
+                    eprintln!("An error {} occurred creating the {} directory...", e, ASSETS_DIR);
                     false
                 },
                 Ok(()) => {
@@ -112,26 +123,29 @@ mod exam {
                 let asset_dir: PathBuf = Self::select_asset_directory(cwd);
                 match Self::display_and_collect_available_exams(asset_dir) {
                     Some(empty_dir) if empty_dir.is_empty() => {
-                        eprintln!("There are no available exam files in chosen directory");
+                        eprintln!("{}There are no available exam files in chosen directory{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                     },
                     Some(exam_dir) => {
                         let usr_choice_prefix: usize = loop {
                             match Self::input("Enter the exam file number (e.g., '1', '2', '3'): ").parse::<usize>() {
                                 Ok(valid_index) if valid_index > 0 && valid_index <= exam_dir.len() => break valid_index - 1,
-                                _ => println!("Please make a valid selection!"),
+                                _ => eprintln!("{}Please make a valid selection!{}", RED_COLOR_CODE, RESET_COLOR_CODE),
                             }
                         };
                         let exam_file_path: Option<&PathBuf> = exam_dir.get(usr_choice_prefix);
                         if exam_file_path.is_none() {
-                            eprintln!("Unable to extract exam file for chosen exam");
+                            eprintln!("{}Unable to extract exam file for chosen exam{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                         } else if let Ok(exam_file) = File::open(exam_file_path.unwrap()) {
                             let reader: BufReader<File> = BufReader::new(exam_file);
-                            break serde_json::from_reader(reader).unwrap_or(None)
+                            match serde_json::from_reader(reader) {
+                                Ok(exam) => break Some(exam),
+                                Err(_) => eprintln!("{}Unable to parse JSON file{}", RED_COLOR_CODE, RESET_COLOR_CODE),
+                            }
                         } else {
-                            eprintln!("Unable to open selected exam");
+                            eprintln!("{}Unable to open selected exam{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                         }
                     },
-                    None => eprintln!("Unable to get list of exam files in chosen directory"),
+                    None => eprintln!("{}Unable to get list of exam files in chosen directory{}", RED_COLOR_CODE, RESET_COLOR_CODE),
                 }
             };
             result
@@ -142,22 +156,20 @@ mod exam {
         /// the initial steps in the `Exam` constructor, or uses a different directory of the user's
         /// choosing.
         fn select_asset_directory(cwd: &PathBuf) -> PathBuf {
-            let asset_dir: PathBuf = loop {
-                let use_default_dir = Self::input("Search default directory for exam files (Y/n)? ");
-                if use_default_dir.eq_ignore_ascii_case("y") {
-                    break cwd.join(ASSETS_DIR)
-                } else if use_default_dir.eq_ignore_ascii_case("n") {
-                    let user_dir = PathBuf::from(Self::input_confirm("Enter the desired exam file directory: "));
-                    if user_dir.exists() && user_dir.is_dir() {
-                        break user_dir
-                    } else {
-                        println!("Please enter a valid directory!");
-                    }
-                } else {
-                    println!("Please enter a valid option!");
+            loop {
+                match Self::input("\nSearch default directory for exam files (Y/n)? ").chars().next().unwrap_or('n') {
+                    'y' | 'Y' => break cwd.join(ASSETS_DIR),
+                    'n' | 'N' => {
+                        let user_dir = PathBuf::from(Self::input_confirm("Enter full path to exam directory: "));
+                        if user_dir.exists() && user_dir.is_dir() {
+                            break user_dir
+                        } else {
+                            eprintln!("{}Please enter a valid directory!{}", RED_COLOR_CODE, RESET_COLOR_CODE);
+                        }
+                    },
+                    _ => eprintln!("{}Please enter a valid option!{}", RED_COLOR_CODE, RESET_COLOR_CODE),
                 }
-            };
-            asset_dir
+            }
         }
 
         /// Lists the exams that are available to study by the file extension ending in `json` at
@@ -166,6 +178,7 @@ mod exam {
         /// paths.
         fn display_and_collect_available_exams(dir: PathBuf) -> Option<Vec<PathBuf>> {
             if let Ok(entries) = fs::read_dir(&dir) {
+                println!("\nThe following compatible exam files were found:");
                 let exams: Vec<PathBuf> = entries
                     .filter(|e|
                          e.as_ref().is_ok_and(|e|
@@ -176,13 +189,13 @@ mod exam {
                     .map(|(index, e)| {
                         let path: PathBuf = e.unwrap().path();
                         let filename: &str = path.file_name().unwrap().to_str().unwrap();
-                        println!("\t{}.) {}", index + 1, filename);
+                        println!("\t{}{}.) {}{}", BLUE_COLOR_CODE, index + 1, filename, RESET_COLOR_CODE);
                         path
                     })
                     .collect();
                 Some(exams)
             } else {
-                eprintln!("Unable to read files in selected directory");
+                eprintln!("{}Unable to read files in selected directory{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                 None
             }
         }
@@ -208,7 +221,7 @@ mod exam {
                 if in1.eq(&in2) {
                     return in2;
                 } else {
-                    println!("Entries must match!");
+                    eprintln!("{}Entries must match!{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                 }
             }
         }
@@ -222,12 +235,12 @@ mod exam {
         pub fn study(&self) {
             // For identifying the user's number of correct answers
             let mut num_correct: u8 = 0;
-            println!("\n\nExam selected: {}", &self.name);
+            println!("\n\n{}Exam selected: {}{}", GREEN_COLOR_CODE, &self.name, RESET_COLOR_CODE);
             // Get the number of questions to study; ensures value range is [1, self.questions.len)
             let num_questions: usize = loop {
                 match Self::input("How many questions would you like to review? ").parse::<usize>() {
                     Ok(num) if num > 0 => break min(num, self.questions.len()),
-                    _ => println!("Please enter a positive number!"),
+                    _ => eprintln!("{}Please enter a positive number!{}", RED_COLOR_CODE, RESET_COLOR_CODE),
                 }
             };
             // Iterate over questions in range specified by user.
@@ -240,7 +253,7 @@ mod exam {
                     .iter()
                     .enumerate()
                     .map(|(index, choice)| {
-                        println!("{}.) {}", (index as u8 + b'a') as char, choice);
+                        println!("{}\t{}.) {}{}", BLUE_COLOR_CODE, (index as u8 + b'a') as char, choice, RESET_COLOR_CODE);
                         choice.to_string()
                     })
                     .collect();
@@ -254,28 +267,28 @@ mod exam {
                         .map_or(usize::MAX, |c| (c as u8 - b'a') as usize);
                     match choices.get(choice_as_index) {
                         Some(choice) => break choice.to_string(),
-                        None => println!("Please pick a valid answer!"),
+                        None => eprintln!("{}Please pick a valid answer!{}", RED_COLOR_CODE, RESET_COLOR_CODE),
                     }
                 };
                 // Let the user know if they've answered correctly; if so, increment num_correct
                 if user_answer.eq(&question.answer) {
-                    println!("Correct!");
+                    println!("{}Correct!{}", GREEN_COLOR_CODE, RESET_COLOR_CODE);
                     num_correct += 1;
                 } else {
-                    println!("Incorrect...");
+                    println!("{}Incorrect...{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                 }
                 // Always print the explanation and reference(s)
-                println!("Explanation: {}", question.explanation);
-                println!("Reference(s):");
-                question.refs.iter().for_each(|r| println!("\t{}", r));
+                println!("{}Explanation: {}{}", YELLOW_COLOR_CODE, question.explanation, RESET_COLOR_CODE);
+                println!("{}Reference(s):\n\t{}{}", CYAN_COLOR_CODE, question.refs.join("\n\t"), RESET_COLOR_CODE);
             }
 
             // Whether or not to play again
-            if !Self::input("Play again (Y/n)? ").eq_ignore_ascii_case("y") {
-                println!("\nYou got {}/{} questions correct.", num_correct, num_questions);
-                println!("Great progress studying!");
-            } else {
-                self.study();
+            match Self::input("\n\nPlay again (Y/n)? ").chars().next().unwrap_or('n') {
+                'y' | 'Y' => self.study(),
+                _ => {
+                    println!("\nYou got {}/{} questions correct.", num_correct, num_questions);
+                    println!("Great progress studying!");
+                }
             }
         }
     }
@@ -283,6 +296,7 @@ mod exam {
 }
 
 fn main() {
+    println!("{}", LOGO);
     if let Some(exam) = Exam::new() {
         exam.study();
     } else {
