@@ -108,49 +108,33 @@ mod exam {
         /// Gets the appropriate exam directory from the user for the study session, attempts to
         /// get the appropriate `Exam` via an `Option` depending on whether the JSON file exists.
         fn get_exam(cwd: &PathBuf) -> Option<Exam> {
-            let asset_dir: PathBuf = Self::select_asset_directory(cwd);
-            match Self::display_and_collect_available_exams(asset_dir) {
-                Some(exam_vec) if exam_vec.is_empty() => {
-                    println!("There are no exam files in the desired directory");
-                    None
-                },
-                Some(exam_vec) => {
-                    let user_choice: usize = loop {
-                        match Self::input("Enter the number for the exam you want to study (i.e. '1', '2', '3'): ").parse::<usize>() {
-                            Ok(num) if num > 0 && num <= exam_vec.len() => break num - 1,
-                            _ => println!("Please enter a valid number!"),
-                        }
-                    };
-                    match exam_vec.get(user_choice) {
-                        Some(exam_path) => {
-                            match File::open(exam_path) {
-                                Ok(exam_file) => {
-                                    let reader = BufReader::new(exam_file);
-                                    match serde_json::from_reader(reader) {
-                                        Ok(exam) => Some(exam),
-                                        Err(e) => {
-                                            eprintln!("Unable to parse JSON exam file; Error: {}", e);
-                                            None
-                                        },
-                                    }
-                                },
-                                Err(e) => {
-                                    eprintln!("An error occurred opening the exam file; Error: {}", e);
-                                    None
-                                },
+            let result: Option<Exam> = loop {
+                let asset_dir: PathBuf = Self::select_asset_directory(cwd);
+                match Self::display_and_collect_available_exams(asset_dir) {
+                    Some(empty_dir) if empty_dir.is_empty() => {
+                        eprintln!("There are no available exam files in chosen directory");
+                    },
+                    Some(exam_dir) => {
+                        let usr_choice_prefix: usize = loop {
+                            match Self::input("Enter the exam file number (e.g., '1', '2', '3'): ").parse::<usize>() {
+                                Ok(valid_index) if valid_index > 0 && valid_index <= exam_dir.len() => break valid_index - 1,
+                                _ => println!("Please make a valid selection!"),
                             }
-                        },
-                        None => {
-                            eprintln!("Unable to get the desired exam from the list of available exams");
-                            None
+                        };
+                        let exam_file_path: Option<&PathBuf> = exam_dir.get(usr_choice_prefix);
+                        if exam_file_path.is_none() {
+                            eprintln!("Unable to extract exam file for chosen exam");
+                        } else if let Ok(exam_file) = File::open(exam_file_path.unwrap()) {
+                            let reader: BufReader<File> = BufReader::new(exam_file);
+                            break serde_json::from_reader(reader).unwrap_or(None)
+                        } else {
+                            eprintln!("Unable to open selected exam");
                         }
-                    }
-                },
-                None => {
-                    eprintln!("No exams available to study with at desired directory");
-                    None
-                },
-            }
+                    },
+                    None => eprintln!("Unable to get list of exam files in chosen directory"),
+                }
+            };
+            result
         }
 
         /// Helper function that obtains the path to the directory where the user has stored their
@@ -181,45 +165,42 @@ mod exam {
         /// exams with a number prefix and return an `Option` with the vector containing the file
         /// paths.
         fn display_and_collect_available_exams(dir: PathBuf) -> Option<Vec<PathBuf>> {
-            let mut exam_number: usize = 1;
-            match fs::read_dir(&dir) {
-                Ok(entries) => {
-                    let exam_files: Vec<PathBuf> = entries
-                        .filter_map(|entry| {
-                            match entry {
-                                Ok(entry) if entry.path().is_file() && entry.path().extension().map_or(false, |ext| ext == "json") => {
-                                    println!("\t{}.) {}", exam_number, entry.path().file_name().expect("Unable to get filename").to_string_lossy());
-                                    exam_number += 1;
-                                    Some(entry.path())
-                                },
-                                _ => None
-                            }
-                        })
-                        .collect();
-                    Some(exam_files)
-                },
-                Err(e) => {
-                    eprintln!("Unable to read files in provided directory; Error: {}", e);
-                    None
-                },
+            if let Ok(entries) = fs::read_dir(&dir) {
+                let exams: Vec<PathBuf> = entries
+                    .filter(|e|
+                         e.as_ref().is_ok_and(|e|
+                             e.path().is_file() && e.path().extension().map_or(false, |ext| ext == "json")
+                         )
+                    )
+                    .enumerate()
+                    .map(|(index, e)| {
+                        let path: PathBuf = e.unwrap().path();
+                        let filename: &str = path.file_name().unwrap().to_str().unwrap();
+                        println!("\t{}.) {}", index + 1, filename);
+                        path
+                    })
+                    .collect();
+                Some(exams)
+            } else {
+                eprintln!("Unable to read files in selected directory");
+                None
             }
         }
 
+        /// Helper function for displaying a prompt that the user can respond to in-line with the
+        /// prompt.
         fn input(prompt: &str) -> String {
             let mut temp: String = String::new();
-            loop {
-                temp.clear();
+            while temp.trim().is_empty() {
                 print!("{}", prompt);
                 stdout().flush().expect("Unable to flush stdout...");
-                stdin().read_line(&mut temp).expect("Unable to get stdin...");
-                let trimmed: String = String::from(temp.trim());
-                if !trimmed.is_empty() {
-                    return trimmed;
-                }
-                println!("Entry must not be empty!");
+                stdin().read_line(&mut temp).expect("Unable to read from stdin");
             }
+            temp.trim().to_string()
         }
 
+        /// Helper function that prompts the user to enter info in-line with a prompt twice to
+        /// verify the user's input is accurate.
         fn input_confirm(prompt: &str) -> String {
             loop {
                 let in1: String = Self::input(prompt);
@@ -239,44 +220,51 @@ mod exam {
         /// number of questions correctly answered to the number of questions studied will be
         /// displayed.
         pub fn study(&self) {
+            // For identifying the user's number of correct answers
             let mut num_correct: u8 = 0;
             println!("\n\nExam selected: {}", &self.name);
-
+            // Get the number of questions to study; ensures value range is [1, self.questions.len)
             let num_questions: usize = loop {
                 match Self::input("How many questions would you like to review? ").parse::<usize>() {
                     Ok(num) if num > 0 => break min(num, self.questions.len()),
                     _ => println!("Please enter a positive number!"),
                 }
             };
-
+            // Iterate over questions in range specified by user.
             for question in self.questions.iter().take(num_questions) {
+                // Display the question prompt so the user knows the question to answer
                 println!("\n{}", question.prompt);
-
+                // Covert question.choices to vector for easy indexing; side effect of printing the
+                // choice with a letter prefix so the user can use the prefix to select their answer
                 let choices: Vec<String> = question.choices
                     .iter()
                     .enumerate()
                     .map(|(index, choice)| {
                         println!("{}.) {}", (index as u8 + b'a') as char, choice);
                         choice.to_string()
-                    }).collect();
-
-                let user_answer_ind = loop {
-                    let user_ans: String = Self::input("Enter answer (e.g., 'a', 'b', 'c'): ");
-                    if let Some(index) = user_ans.chars().next().map(|c| (c as u8 - b'a') as usize) {
-                        if index < choices.len() {
-                            break index;
-                        }
+                    })
+                    .collect();
+                // Get the user's answer; if the user's answer is a valid choice, then the choice
+                // itself (i.e., the element from question.choices) will be returned.
+                let user_answer: String = loop {
+                    let letter_choice: String = Self::input("Enter answer (e.g., 'a', 'b', 'c'): ");
+                    let choice_as_index: usize = letter_choice
+                        .chars()
+                        .next()
+                        .map_or(usize::MAX, |c| (c as u8 - b'a') as usize);
+                    match choices.get(choice_as_index) {
+                        Some(choice) => break choice.to_string(),
+                        None => println!("Please pick a valid answer!"),
                     }
-                    println!("Please make a valid selection!");
                 };
-
-                if choices[user_answer_ind].eq_ignore_ascii_case(&question.answer) {
-                    println!("\nCorrect!");
+                // Let the user know if they've answered correctly; if so, increment num_correct
+                if user_answer.eq(&question.answer) {
+                    println!("Correct!");
                     num_correct += 1;
                 } else {
-                    println!("\nIncorrect...");
+                    println!("Incorrect...");
                 }
-
+                // Always print the explanation and reference(s)
                 println!("Explanation: {}", question.explanation);
                 println!("Reference(s):");
                 question.refs.iter().for_each(|r| println!("\t{}", r));
