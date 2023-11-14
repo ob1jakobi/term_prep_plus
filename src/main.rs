@@ -105,116 +105,105 @@ mod exam {
             }
         }
 
+        /// Gets the appropriate exam directory from the user for the study session, attempts to
+        /// get the appropriate `Exam` via an `Option` depending on whether the JSON file exists.
         fn get_exam(cwd: &PathBuf) -> Option<Exam> {
-            println!("Checking available exam files in the default location...");
-            // Create an iterable of all the applicable exam files in assets
-            if let Some(exams) = Self::collect_available_exams(cwd) {
-                if exams.is_empty() {
-                    println!("\tThere are no available exams in the default {} directory.", ASSETS_DIR);
+            let asset_dir: PathBuf = Self::select_asset_directory(cwd);
+            match Self::display_and_collect_available_exams(asset_dir) {
+                Some(exam_vec) if exam_vec.is_empty() => {
+                    println!("There are no exam files in the desired directory");
                     None
-                } else {
-                    println!("Please choose one of the following exams:");
-                    for (index, exam_path) in exams.iter().enumerate() {
-                        if let Some(file_name) = exam_path.file_name() {
-                            if let Some(exam_file_name) = file_name.to_str() {
-                                println!("\t{}.) {}", index + 1, exam_file_name);
-                            }
+                },
+                Some(exam_vec) => {
+                    let user_choice: usize = loop {
+                        match Self::input("Enter the number for the exam you want to study (i.e. '1', '2', '3'): ").parse::<usize>() {
+                            Ok(num) if num > 0 && num <= exam_vec.len() => break num - 1,
+                            _ => println!("Please enter a valid number!"),
                         }
-                    }
-                    // TODO: Get the user's input and return the option of the exam selected
-                }
-            } else {
-                println!("Unable to collect the exams from the default {} directory.", ASSETS_DIR);
-                None
-            }
-        }
-
-        fn collect_available_exams(cwd: &PathBuf) -> Option<Vec<PathBuf>> {
-            let assets_dir: PathBuf = cwd.join(ASSETS_DIR);
-            if let Ok(entries) = fs::read_dir(&assets_dir) {
-                let exam_files: Vec<PathBuf> = entries
-                    .filter_map(|entry| {
-                        match entry {
-                            Ok(entry) => {
-                                let path = entry.path();
-                                if path.is_file() && path.extension().map_or(false, |ext| ext == "json") {
-                                    Some(path)
-                                } else {
+                    };
+                    match exam_vec.get(user_choice) {
+                        Some(exam_path) => {
+                            match File::open(exam_path) {
+                                Ok(exam_file) => {
+                                    let reader = BufReader::new(exam_file);
+                                    match serde_json::from_reader(reader) {
+                                        Ok(exam) => Some(exam),
+                                        Err(e) => {
+                                            eprintln!("Unable to parse JSON exam file; Error: {}", e);
+                                            None
+                                        },
+                                    }
+                                },
+                                Err(e) => {
+                                    eprintln!("An error occurred opening the exam file; Error: {}", e);
                                     None
-                                }
-                            },
-                            _ => None
-                        }
-                    })
-                    .collect();
-                Some(exam_files)
-            } else {
-                println!("\tThere was an error accessing the {} directory...", ASSETS_DIR);
-                None
-            }
-        }
-
-
-        /*
-        fn get_exam(cwd: &PathBuf) -> Option<Exam> {
-            if Self::show_available_exams(&cwd) {
-                let exam_filename: String = Self::input_confirm("Enter filename of exam: ");
-                let mut exam_file_path = PathBuf::from(cwd);
-                exam_file_path.push(ASSETS_DIR);
-                exam_file_path.push(&exam_filename);
-                match File::open(cwd.join(exam_file_path)) {
-                    Err(e) => {
-                        eprintln!("Unable to open {} exam file... error: {}", &exam_filename, e);
-                        None
-                    },
-                    Ok(exam_file) => {
-                        let reader = BufReader::new(exam_file);
-                        let exam: Exam = serde_json::from_reader(reader).expect("Error parsing JSON");
-                        Some(exam)
-                    }
-                }
-            } else {
-                None
-            }
-        }
-
-        fn show_available_exams(cwd: &PathBuf) -> bool {
-            let assets_dir: PathBuf = cwd.join(ASSETS_DIR);
-            println!("Available exams files include:");
-            if let Ok(entries) = fs::read_dir(&assets_dir) {
-                let exam_files: Vec<PathBuf> = entries
-                    .filter_map(|entry| {
-                        if let Ok(entry) = entry {
-                            let path = entry.path();
-                            if path.is_file() && path.extension().map_or(false, |ext| ext == "json") {
-                                Some(path)
-                            } else {
-                                None
+                                },
                             }
-                        } else {
+                        },
+                        None => {
+                            eprintln!("Unable to get the desired exam from the list of available exams");
                             None
                         }
-                    })
-                    .collect();
-                if exam_files.is_empty() {
-                    println!("\tThere are no exam files available in the {} directory...", ASSETS_DIR);
-                    false
-                } else {
-                    for (index, exam) in exam_files.iter().enumerate() {
-                        if let Some(exam_file) = exam.file_name() {
-                            if let Some(exam_file_name) = exam_file.to_str() {
-                                println!("\t{}.) {:?}", index + 1, exam_file_name);
-                            }
-                        }
                     }
-                    true
-                }
-            } else {
-                println!("\tThere was an error accessing the {} directory", ASSETS_DIR);
-                false
+                },
+                None => {
+                    eprintln!("No exams available to study with at desired directory");
+                    None
+                },
             }
         }
-        */
+
+        /// Helper function that obtains the path to the directory where the user has stored their
+        /// exam files. The user can opt to use the `assets` directory, which is created as one of
+        /// the initial steps in the `Exam` constructor, or uses a different directory of the user's
+        /// choosing.
+        fn select_asset_directory(cwd: &PathBuf) -> PathBuf {
+            let asset_dir: PathBuf = loop {
+                let use_default_dir = Self::input("Search default directory for exam files (Y/n)? ");
+                if use_default_dir.eq_ignore_ascii_case("y") {
+                    break cwd.join(ASSETS_DIR)
+                } else if use_default_dir.eq_ignore_ascii_case("n") {
+                    let user_dir = PathBuf::from(Self::input_confirm("Enter the desired exam file directory: "));
+                    if user_dir.exists() && user_dir.is_dir() {
+                        break user_dir
+                    } else {
+                        println!("Please enter a valid directory!");
+                    }
+                } else {
+                    println!("Please enter a valid option!");
+                }
+            };
+            asset_dir
+        }
+
+        /// Lists the exams that are available to study by the file extension ending in `json` at
+        /// the directory provided. If the directory with the exam files exist, this display the
+        /// exams with a number prefix and return an `Option` with the vector containing the file
+        /// paths.
+        fn display_and_collect_available_exams(dir: PathBuf) -> Option<Vec<PathBuf>> {
+            let mut exam_number: usize = 1;
+            match fs::read_dir(&dir) {
+                Ok(entries) => {
+                    let exam_files: Vec<PathBuf> = entries
+                        .filter_map(|entry| {
+                            match entry {
+                                Ok(entry) if entry.path().is_file() && entry.path().extension().map_or(false, |ext| ext == "json") => {
+                                    println!("\t{}.) {}", exam_number, entry.path().file_name().expect("Unable to get filename").to_string_lossy());
+                                    exam_number += 1;
+                                    Some(entry.path())
+                                },
+                                _ => None
+                            }
+                        })
+                        .collect();
+                    Some(exam_files)
+                },
+                Err(e) => {
+                    eprintln!("Unable to read files in provided directory; Error: {}", e);
+                    None
+                },
+            }
+        }
 
         fn input(prompt: &str) -> String {
             let mut temp: String = String::new();
