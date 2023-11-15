@@ -277,8 +277,11 @@ mod exam {
                 } else {
                     println!("{}Incorrect...{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                 }
-                // Always print the explanation and reference(s)
-                println!("{}Explanation: {}{}", YELLOW_COLOR_CODE, question.explanation, RESET_COLOR_CODE);
+                // Only print the explanation if one is provided; self-explanatory questions don't need explanation
+                if !question.explanation.is_empty() {
+                    println!("{}Explanation: {}{}", YELLOW_COLOR_CODE, question.explanation, RESET_COLOR_CODE);
+                }
+                // Always print reference(s)
                 println!("{}Reference(s):\n\t{}{}", CYAN_COLOR_CODE, question.refs.join("\n\t"), RESET_COLOR_CODE);
             }
 

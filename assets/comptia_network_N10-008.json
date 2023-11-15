@@ -12,7 +12,7 @@
       "answer": "Physical",
       "explanation": "The 1st layer of the OSI model is the Physical layer; a mnemonic to help remember this is 'Please Do Not Throw Sausage Pizza Away', where: \n\t1.) 'Please' -> Physical;\n\t2.) 'Do' -> Data Link;\n\t3.) 'Not' -> Network;\n\t4.) 'Throw' -> Transport;\n\t5.) 'Sausage' -> Session;\n\t6.) 'Pizza' -> Presentation;\n\t7.) 'Away' -> Application.",
       "refs": [
-        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 4-8.",
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 2-8.",
         "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-51."
       ]
     },
@@ -27,7 +27,7 @@
       "answer": "Data Link",
       "explanation": "The 2nd layer of the OSI model is the Data Link layer; a mnemonic to help remember this is 'Please Do Not Throw Sausage Pizza Away', where: \n\t1.) 'Please' -> Physical;\n\t2.) 'Do' -> Data Link;\n\t3.) 'Not' -> Network;\n\t4.) 'Throw' -> Transport;\n\t5.) 'Sausage' -> Session;\n\t6.) 'Pizza' -> Presentation;\n\t7.) 'Away' -> Application.",
       "refs": [
-        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 4-8.",
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 2-8.",
         "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-51."
       ]
     },
@@ -42,8 +42,650 @@
       "answer": "Network",
       "explanation": "The 3rd layer of the OSI model is the Network layer; a mnemonic to help remember this is 'Please Do Not Throw Sausage Pizza Away', where: \n\t1.) 'Please' -> Physical;\n\t2.) 'Do' -> Data Link;\n\t3.) 'Not' -> Network;\n\t4.) 'Throw' -> Transport;\n\t5.) 'Sausage' -> Session;\n\t6.) 'Pizza' -> Presentation;\n\t7.) 'Away' -> Application.",
       "refs": [
-        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 4-8.",
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 2-8.",
         "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-51."
+      ]
+    },
+    {
+      "question": "What is Layer 4 of the OSI Model?",
+      "choices": [
+        "Network",
+        "Data Link",
+        "Transport",
+        "Physical",
+        "Transmission"
+      ],
+      "answer": "Transport",
+      "explanation": "The 4th layer of the OSI model is the Transport layer; a mnemonic to help remember this is 'Please Do Not Throw Sausage Pizza Away', where: \n\t1.) 'Please' -> Physical;\n\t2.) 'Do' -> Data Link;\n\t3.) 'Not' -> Network;\n\t4.) 'Throw' -> Transport;\n\t5.) 'Sausage' -> Session;\n\t6.) 'Pizza' -> Presentation;\n\t7.) 'Away' -> Application.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 2-8.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-51."
+      ]
+    },
+    {
+      "question": "What is Layer 5 of the OSI Model?",
+      "choices": [
+        "Synchronous",
+        "Systems",
+        "Transport",
+        "Session",
+        "Application"
+      ],
+      "answer": "Session",
+      "explanation": "The 5th layer of the OSI model is the Session layer; a mnemonic to help remember this is 'Please Do Not Throw Sausage Pizza Away', where: \n\t1.) 'Please' -> Physical;\n\t2.) 'Do' -> Data Link;\n\t3.) 'Not' -> Network;\n\t4.) 'Throw' -> Transport;\n\t5.) 'Sausage' -> Session;\n\t6.) 'Pizza' -> Presentation;\n\t7.) 'Away' -> Application.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 2-8.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-51."
+      ]
+    },
+    {
+      "question": "What is Layer 6 of the OSI Model",
+      "choices": [
+        "Presentation",
+        "Physical",
+        "Protocol",
+        "Transport",
+        "Session",
+        "Transmission"
+      ],
+      "answer": "Presentation",
+      "explanation": "The 6th layer of the OSI model is the Presentation layer; a mnemonic to help remember this is 'Please Do Not Throw Sausage Pizza Away', where: \n\t1.) 'Please' -> Physical;\n\t2.) 'Do' -> Data Link;\n\t3.) 'Not' -> Network;\n\t4.) 'Throw' -> Transport;\n\t5.) 'Sausage' -> Session;\n\t6.) 'Pizza' -> Presentation;\n\t7.) 'Away' -> Application.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 2-8.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-51."
+      ]
+    },
+    {
+      "question": "What is Layer 7 of the OSI Model",
+      "choices": [
+        "Application",
+        "Appliance",
+        "Association",
+        "Presentation",
+        "Browser"
+      ],
+      "answer": "Application",
+      "explanation": "The 7th layer of the OSI model is the Application layer; a mnemonic to help remember this is 'Please Do Not Throw Sausage Pizza Away', where: \n\t1.) 'Please' -> Physical;\n\t2.) 'Do' -> Data Link;\n\t3.) 'Not' -> Network;\n\t4.) 'Throw' -> Transport;\n\t5.) 'Sausage' -> Session;\n\t6.) 'Pizza' -> Presentation;\n\t7.) 'Away' -> Application.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 2-8.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-51."
+      ]
+    },
+    {
+      "question": "What does the initialism OSI stand for, with regards to the OSI reference model for network layers?",
+      "choices": [
+        "Organization for Standardization International",
+        "Original Systems Interconnect",
+        "Online System-layer Internet",
+        "Open Systems Interconnect",
+        "Open Systems Internet"
+      ],
+      "answer": "Open Systems Interconnect",
+      "explanation": "The International Organization for Standardization (ISO) developed the Open Systems Interconnect (OSI) reference model.\nThe choice Organization for Standardization International is a shuffling of the words in the ISO initialism; the other terms are made up.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 2.,",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 32."
+      ]
+    },
+    {
+      "question": "What does the initialism ISO stand for?",
+      "choices": [
+        "Interconnected Systems Organization",
+        "International Security Organization",
+        "Institute of Standards and Operations",
+        "International Organization for Standardization"
+      ],
+      "answer": "International Organization for Standardization",
+      "explanation": "The International Organization for Standardization (ISO) is known for its work developing the Open Systems Interconnect (OSI) reference model, which describes how network systems can be categorized into distinct 7-layers",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Page 2.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 32."
+      ]
+    },
+    {
+      "question": "Which OSI Layer is responsible for the transmission and receipt of the signals that represent bits of data from one node to another node?",
+      "choices": [
+        "Transmission",
+        "Session",
+        "Physical",
+        "Data Link",
+        "Transport"
+      ],
+      "answer": "Physical",
+      "explanation": "The Physical Layer is responsible for moving bits between devices, and specifies voltage, wire speeds, cable pin-out, the physical topology of the network, as well as devices like:\n\tA.) Transceiver\n\tB.) Repeater\n\tC.) Hub\n\tD.) Media Converter\n\tE.) Modem",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 4-5.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 34-35, 48-49."
+      ]
+    },
+    {
+      "question": "What does the initialism PDU stand for, with regards to the OSI Model layers?",
+      "choices": [
+        "Physical Data Unit",
+        "Particle Data Unit",
+        "Protocol Description Unit",
+        "Protocol Data Unit"
+      ],
+      "answer": "Protocol Data Unit",
+      "explanation": "As part of the encapsulation process, each level of the OSI Model (except the Physical Layer), the sending node adds a header to the data payload, forming a 'chunk' of data called a Protocol Data Unit (PDU).",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 4.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 49-50."
+      ]
+    },
+    {
+      "question": "Which of the following is attached/added to the header of payload data by each respective layer of the OSI model as part of the encapsulation process?",
+      "choices": [
+        "TCP/IP Addresses",
+        "Bits",
+        "Frames",
+        "Datagrams",
+        "Protocol Data Unit",
+        "Protocol Description Unit"
+      ],
+      "answer": "Protocol Data Unit",
+      "explanation": "To communicate and exchange information, each layer uses Protocol Data Units (PDUs). These hold the control information attached to the data at each layer of the OSI Model. This is the process of encapsulation.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg. 4",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg. 49."
+      ]
+    },
+    {
+      "question": "What is the PDU of the Physical Layer of the OSI Model?",
+      "choices": [
+        "Bits",
+        "Frames",
+        "Datagram",
+        "Packet",
+        "Segment",
+        "Data"
+      ],
+      "answer": "Bits",
+      "explanation": "Although the Physical Layer does not add any header to encapsulate the data (string of bits), the Protocol Data Unit (PDU) of the Physical Layer are the bits representing the data itself that is being transferred.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 4.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 49-50."
+      ]
+    },
+    {
+      "question": "What is the PDU of the Data Link Layer of the OSI Model?",
+      "choices": [
+        "Bits",
+        "Frames",
+        "Datagram",
+        "Packet",
+        "Segment"
+      ],
+      "answer": "Frames",
+      "explanation": "The Data Link layer organizes the stream of bits arriving from the physical layer into structured units called frames. Each frame contains a network layer packet as its payload. Control information is also added to the payload in the form of header fields, which indicate the source and destination hardware address, plus a basic error check to test if the frame was received intact.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 5.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 49-50"
+      ]
+    },
+    {
+      "question": "What is the PDU of the Network Layer of the OSI Model?",
+      "choices": [
+        "Bits",
+        "Frames",
+        "Datagram",
+        "Segments",
+        "Data"
+      ],
+      "answer": "Datagram",
+      "explanation": "While the Data Link Layer is capable of forwarding data by using hardware addresses within a single segment, the Network Layer moves information around an internetwork by using logical network and host IDs. The Network Layer forwards information between networks by examining the destination network-layer address or logical network; the packet/datagram is forwarded, router by router (or hop by hop), through the internetwork to the target network.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 6.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 49-50."
+      ]
+    },
+    {
+      "question": "What is the PDU of the Network Layer of the OSI Model?",
+      "choices": [
+        "Bits",
+        "Frames",
+        "Packets",
+        "Segments"
+      ],
+      "answer": "Packets",
+      "explanation": "While the Data Link Layer is capable of forwarding data by using hardware addresses within a single segment, the Network Layer moves information around an internetwork by using logical network and host IDs. The Network Layer forwards information between networks by examining the destination network-layer address or logical network; the packet/datagram is forwarded, router by router (or hop by hop), through the internetwork to the target network.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (Exam N10-008). Pg 6.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 49-50."
+      ]
+    },
+    {
+      "question": "What is the PDU of the Transport Layer of the OSI Model?",
+      "choices": [
+        "Bits",
+        "Frames",
+        "Segments",
+        "Datagram",
+        "Packets"
+      ],
+      "answer": "Segments",
+      "explanation": "At the Transport Layer, on the sending host, data from the upper layers is packaged as a series of segments. Each segment is tagged with the application's port number. The segment is then passed to the network layer for delivery.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 7.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 49-50."
+      ]
+    },
+    {
+      "question": "Which of the following is NOT a Physical Layer device?",
+      "choices": [
+        "Transceiver",
+        "Repeater",
+        "Hub",
+        "Media Converter",
+        "Modem",
+        "Network Adapter/Network Interface Card (NIC)"
+      ],
+      "answer": "Network Adapter/Network Interface Card (NIC)",
+      "explanation": "A NIC joins an end system host to network media (cabling or wireless) and enables it to communicate over the network by assembling and disassembling frames (which are Layer 2 PDUs).  Media Access Control (MAC) addresses, also known as hardware or physical addresses, are Layer 2 addresses. A mnemonic to remember the Layer 1 devices is 'The Real Heroes Make Movies', where:\n\tA.) The -> Transceiver\n\tB.) Real -> Repeater\n\tC.) Heroes -> Hub\n\tD.) Make -> Media Converters\n\tE.) Movies -> Modems.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 4-5.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 53."
+      ]
+    },
+    {
+      "question": "Which of the following details Physical Layer devices?",
+      "choices": [
+        "Modem, Transceiver, NIC, CAT cabling",
+        "Hub, Media Converter, Modem, Transceiver",
+        "Bridge, NIC, Wireless Access Point (AP)",
+        "Media Converter, Bridge, Transceiver"
+      ],
+      "answer": "Hub, Media Converter, Modem, Transceiver",
+      "explanation": "A mnemonic to remember the Layer 1 devices is 'The Real Heroes Make Movies', where:\n\tA.) The -> Transceiver\n\tB.) Real -> Repeater\n\tC.) Heroes -> Hub\n\tD.) Make -> Media Converters\n\tE.) Movies -> Modems.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 4-5.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 53."
+      ]
+    },
+    {
+      "question": "Which of the following is NOT a Data Link Layer device?",
+      "choices": [
+        "Bridge",
+        "NIC",
+        "Switch",
+        "Router",
+        "Wireless Access Point (AP)"
+      ],
+      "answer": "Router",
+      "explanation": "Routers, which work at the Network Layer, don't care about where a particular host is located; they're only concerned about where networks are located and the best way to reach them - including remote networks. A mnemonic to remember the Layer 2 devices is 'Never Buy Worn Swimsuits', where:\n\tA.) Never -> Network Adapter/NIC\n\tB.) Buy -> Bridge\n\tC.) Worn -> Wireless Access Points (APs)\n\tD.) Swimsuits -> Switches",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 6.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 52."
+      ]
+    },
+    {
+      "question": "Which of the following details Data Link Layer devices?",
+      "choices": [
+        "Wireless Access Points (APs), Routers, NICs",
+        "NICs, Bridges, Media Converters",
+        "Bridges, Switches, NICs, Repeaters",
+        "Switches, Network Adapters/NICs, Wireless Access Points (APs), Bridges"
+      ],
+      "answer": "Switches, Network Adapters/NICs, Wireless Access Points (APs), Bridges",
+      "explanation": "A mnemonic to remember the Layer 2 devices is 'Never Buy Worn Swimsuits', where:\n\tA.) Never -> Network Adapter/NIC\n\tB.) Buy -> Bridge\n\tC.) Worn -> Wireless Access Points (APs)\n\tD.) Swimsuits -> Switches",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 6.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 46, 52."
+      ]
+    },
+    {
+      "question": "Which of the following is a Network Layer device?",
+      "choices": [
+        "Routers",
+        "Network Interface Card (NIC)",
+        "Network Adapter",
+        "Switch",
+        "Media Converter"
+      ],
+      "answer": "Routers",
+      "explanation": "The main device working at Layer 3 is the router. Although Layer 3 capable switches are optimized for routing between Virtual Local Area Networks (VLANs), and can maintain a mapping table of IP addresses to MAC addresses so that when a path is established, it can use low-latency hardware-based forwarding. However, layer 3 switches do not typically have WAN interfaces and so are not usually used for routing at the network edge.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 6, 174.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 43-46."
+      ]
+    },
+    {
+      "question": "At which layer of the OSI Model are firewalls implemented?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 3",
+      "explanation": "A basic firewall operates at Layer 3, the Network Layer, to enforce an Access Control List (ACL), because it's usually important for traffic passing between networks to be filtered. A network ACL is a list of the addresses and types of traffic that are permitted or blocked.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 7.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 46."
+      ]
+    },
+    {
+      "question": "At which layer of the OSI Model are port numbers tagged into this layer's PDU?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 4",
+      "explanation": "At the transport layer, on the sending host, data from the upper layers is packaged as a series of layer 4 PDUs, referred to as segments. Each segment is tagged with the application's port number. The segment is then passed to the network layer for delivery. Many different hosts could be transmitting multiple HTTP and email packets at the same time. These are multiplexed using the port numbers along with the source and destination network addresses onto the same link.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 7.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 209."
+      ]
+    },
+    {
+      "question": "What is the range of the 'well-known' port numbers (inclusive) that are preassigned by the Internet Assigned Numbers Authority (IANA)?",
+      "choices": [
+        "0-1023",
+        "1-1023",
+        "0-1024",
+        "1-1024",
+        "0-5061",
+        "1-5061"
+      ],
+      "answer": "0-1023",
+      "explanation": "Although other server applications have been registered in the port range 1024-49151, the range of port numbers preassigned by IANA are 0-1023 (inclusive).",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 208.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 209."
+      ]
+    },
+    {
+      "question": "Which of the following are Layer 4 devices?",
+      "choices": [
+        "Multi-layer Switches (i.e., load balancers), Next Generation Firewalls (NGFWs), Intrusion Detection Systems (IDSs)",
+        "Hubs, Repeaters, Media Converters, Routers",
+        "Routers, Bridges, Switches",
+        "Multi-layer Switches (i.e., load balancers), Routers, Intrusion Detection Systems (IDSs)"
+      ],
+      "answer": "Multi-layer Switches (i.e., load balancers), Next Generation Firewalls (NGFWs), Intrusion Detection Systems (IDSs)",
+      "explanation": "Devices working at the Transport Layer include multi-layer switches - usually working as load balancers - and many types of security appliances, such as more advanced firewalls and intrusion detection systems (IDSs).",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 7."
+      ]
+    },
+    {
+      "question": "Which of the following is NOT a Layer 4 device?",
+      "choices": [
+        "Multi-layer Switches (i.e., load balancers)",
+        "Next Generation Firewalls (NGFWs)",
+        "Intrusion Detection Systems (IDSs)",
+        "Routers"
+      ],
+      "answer": "Routers",
+      "explanation": "Devices working at the Transport Layer include multi-layer switches - usually working as load balancers - and many types of security appliances, such as more advanced firewalls and intrusion detection systems (IDSs).",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 7."
+      ]
+    },
+    {
+      "question": "Which layer of the OSI model allows for the exchange of multiple messages between a client and a server, and represents functions that administer the process of establishing dialog, managing data transfer, and then ending (or tearing down) the session?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 5",
+      "explanation": "The Session Layer, Layer 5, basically keeps data separate from other application's data. It is also responsible for setting up, managing, and then tearing down sessions between Presentation Layer entries. The Session Layer also provides dialog control between devices, or nodes.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 8.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 37."
+      ]
+    },
+    {
+      "question": "Which layer of the OSI model is also know as the end-to-end or host-to-host layer, and can establish a logical connection between the sending host and destination host on an internetwork?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 4",
+      "explanation": "The Transport Layer is responsible for providing the mechanisms for multiplexing upper-layer applications, establishing virtual connections, and tearing down virtual circuits. Transmission Control Protocol (TCP) and User Datagram Protocol (UDP) work at the Transport Layer",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 7.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 37-38."
+      ]
+    },
+    {
+      "question": "In which OSI Layer are TCP (connection-oriented) and UDP (connectionless) communication protocols implemented?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 4",
+      "explanation": "",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 209-213.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 38."
+      ]
+    },
+    {
+      "question": "Which OSI Layer is responsible for transforming the data between the format required for the network and the format required for the application, such as character set conversion between the American Standard Code for Information Interchange (ASCII) and Unicode?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 6",
+      "explanation": "The Presentation Layer gets its name from its purpose; it presents data to the Application Layer and is responsible for data translation and code formatting.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 8.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 37."
+      ]
+    },
+    {
+      "question": "Which OSI Layer is associated with tasks such as data compression/decompression, and encryption/decryption?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 6",
+      "explanation": "Although the Presentation Layer can be conceived as supporting data compression and encryption, in practical terms, these functions are often implemented by encryption devices and protocols running at lower layers of the stack or simply within a homogenous application layer.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 8.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 37."
+      ]
+    },
+    {
+      "question": "Which OSI Layer doesn't encapsulate any other protocols or provide services to any protocol, and is where users actually communicate or interact with the computer?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 7",
+      "explanation": "The Application Layer acts as an interface between the application program - which isn't part of the layered structure - and the next layer down by providing ways for the application to send information down through the protocol stack. Web browsing, email communications, directory lookup, remote printing, and database services",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 8.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 36."
+      ]
+    },
+    {
+      "question": "At which OSI layer is the concept of a port number introduced?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 4",
+      "explanation": "The Transport Layer of the OSI model is the layer that tags each segment with the application's port number.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 7.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 209."
+      ]
+    },
+    {
+      "question": "What Physical Layer device is defined as the part of the network interface that sends and receives signals over the network media?",
+      "choices": [
+        "Transceiver",
+        "Repeater",
+        "Hub",
+        "Media Converter",
+        "Modem"
+      ],
+      "answer": "Transceiver",
+      "explanation": "A transceiver is a device made up of both a transmitter and a receiver, which are combined and share common circuitry or a single housing.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 4.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 71-72."
+      ]
+    },
+    {
+      "question": "What Physical Layer device is defined as a device that amplifies an electronic signal to extend the maximum allowable distance for the media type?",
+      "choices": [
+        "Transceiver",
+        "Repeater",
+        "Hub",
+        "Media Converter",
+        "Modem"
+      ],
+      "answer": "Repeater",
+      "explanation": "",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 4."
+      ]
+    },
+    {
+      "question": "What Physical Layer device is defined as a multi-port repeater, deployed as the central point of connection for nodes?",
+      "choices": [
+        "Transceiver",
+        "Repeater",
+        "Hub",
+        "Media Converter",
+        "Modem"
+      ],
+      "answer": "Hub",
+      "explanation": "",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 5."
+      ]
+    },
+    {
+      "question": "What Physical Layer device is defined as a device that converts one media signaling type to another?",
+      "choices": [
+        "Transceiver",
+        "Repeater",
+        "Hub",
+        "Media Converter",
+        "Modem"
+      ],
+      "answer": "Media Converter",
+      "explanation": "",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 5."
+      ]
+    },
+    {
+      "question": "What Physical Layer device is defined as a device that performs some type of signal modulation and demodulation, such as sending digital data over an analog line?",
+      "choices": [
+        "Transceiver",
+        "Repeater",
+        "Hub",
+        "Media Converter",
+        "Modem"
+      ],
+      "answer": "Modem",
+      "explanation": "",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 5."
+      ]
+    },
+    {
+      "question": "What Data Link Layer device is defined as a device that joins an end system host to network media (cabling or wireless) and enables it to communicate over the network by assembling and disassembling frames?",
+      "choices": [
+        "NIC",
+        "Bridge",
+        "Switch",
+        "Wireless Access Point"
+      ],
+      "answer": "NIC",
+      "explanation": "A network adapter or Network Interface Card (NIC) is a Layer 2 device that joins an end system host to network media, enabling it to communicate over the network by assembling and disassembling frames.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 6."
+      ]
+    },
+    {
+      "question": "What Data Link Layer device is defined as a type of intermediate system that joins physical network segments while minimizing the performance reduction of having more nodes on the same network; it also has multiple ports, where each functions as a network interface?",
+      "choices": [
+        "NIC",
+        "Bridge",
+        "Switch",
+        "Wireless Access Point"
+      ],
+      "answer": "Bridge",
+      "explanation": "",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 6."
+      ]
+    },
+    {
+      "question": "What Data Link Layer device is defined as an advanced type of bridge with many ports, and creates links between large numbers of nodes more efficiently?",
+      "choices": [
+        "NIC",
+        "Bridge",
+        "Switch",
+        "Wireless Access Point"
+      ],
+      "answer": "Switch",
+      "explanation": "",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 6."
+      ]
+    },
+    {
+      "question": "Which Data Link Layer device is defined as allowing nodes with wireless network cards to communicate, and creates a bridge between wireless networks and wired ones?",
+      "choices": [
+        "NIC",
+        "Bridge",
+        "Switch",
+        "Wireless Access Point"
+      ],
+      "answer": "Wireless Access Point",
+      "explanation": "",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 6."
       ]
     }
   ]
