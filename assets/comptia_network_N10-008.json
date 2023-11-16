@@ -47,7 +47,7 @@
       ]
     },
     {
-      "question": "What is Layer 4 of the OSI Model?",
+      "prompt": "What is Layer 4 of the OSI Model?",
       "choices": [
         "Network",
         "Data Link",
@@ -63,7 +63,7 @@
       ]
     },
     {
-      "question": "What is Layer 5 of the OSI Model?",
+      "prompt": "What is Layer 5 of the OSI Model?",
       "choices": [
         "Synchronous",
         "Systems",
@@ -79,7 +79,7 @@
       ]
     },
     {
-      "question": "What is Layer 6 of the OSI Model",
+      "prompt": "What is Layer 6 of the OSI Model",
       "choices": [
         "Presentation",
         "Physical",
@@ -96,7 +96,7 @@
       ]
     },
     {
-      "question": "What is Layer 7 of the OSI Model",
+      "prompt": "What is Layer 7 of the OSI Model",
       "choices": [
         "Application",
         "Appliance",
@@ -112,7 +112,7 @@
       ]
     },
     {
-      "question": "What does the initialism OSI stand for, with regards to the OSI reference model for network layers?",
+      "prompt": "What does the initialism OSI stand for, with regards to the OSI reference model for network layers?",
       "choices": [
         "Organization for Standardization International",
         "Original Systems Interconnect",
@@ -128,7 +128,7 @@
       ]
     },
     {
-      "question": "What does the initialism ISO stand for?",
+      "prompt": "What does the initialism ISO stand for?",
       "choices": [
         "Interconnected Systems Organization",
         "International Security Organization",
@@ -143,7 +143,7 @@
       ]
     },
     {
-      "question": "Which OSI Layer is responsible for the transmission and receipt of the signals that represent bits of data from one node to another node?",
+      "prompt": "Which OSI Layer is responsible for the transmission and receipt of the signals that represent bits of data from one node to another node?",
       "choices": [
         "Transmission",
         "Session",
@@ -159,7 +159,7 @@
       ]
     },
     {
-      "question": "What does the initialism PDU stand for, with regards to the OSI Model layers?",
+      "prompt": "What does the initialism PDU stand for, with regards to the OSI Model layers?",
       "choices": [
         "Physical Data Unit",
         "Particle Data Unit",
@@ -174,7 +174,7 @@
       ]
     },
     {
-      "question": "Which of the following is attached/added to the header of payload data by each respective layer of the OSI model as part of the encapsulation process?",
+      "prompt": "Which of the following is attached/added to the header of payload data by each respective layer of the OSI model as part of the encapsulation process?",
       "choices": [
         "TCP/IP Addresses",
         "Bits",
@@ -191,7 +191,7 @@
       ]
     },
     {
-      "question": "What is the PDU of the Physical Layer of the OSI Model?",
+      "prompt": "What is the PDU of the Physical Layer of the OSI Model?",
       "choices": [
         "Bits",
         "Frames",
@@ -208,7 +208,7 @@
       ]
     },
     {
-      "question": "What is the PDU of the Data Link Layer of the OSI Model?",
+      "prompt": "What is the PDU of the Data Link Layer of the OSI Model?",
       "choices": [
         "Bits",
         "Frames",
@@ -224,7 +224,7 @@
       ]
     },
     {
-      "question": "What is the PDU of the Network Layer of the OSI Model?",
+      "prompt": "What is the PDU of the Network Layer of the OSI Model?",
       "choices": [
         "Bits",
         "Frames",
@@ -240,7 +240,7 @@
       ]
     },
     {
-      "question": "What is the PDU of the Network Layer of the OSI Model?",
+      "prompt": "What is the PDU of the Network Layer of the OSI Model?",
       "choices": [
         "Bits",
         "Frames",
@@ -255,7 +255,7 @@
       ]
     },
     {
-      "question": "What is the PDU of the Transport Layer of the OSI Model?",
+      "prompt": "What is the PDU of the Transport Layer of the OSI Model?",
       "choices": [
         "Bits",
         "Frames",
@@ -271,7 +271,7 @@
       ]
     },
     {
-      "question": "Which of the following is NOT a Physical Layer device?",
+      "prompt": "Which of the following is NOT a Physical Layer device?",
       "choices": [
         "Transceiver",
         "Repeater",
@@ -288,7 +288,7 @@
       ]
     },
     {
-      "question": "Which of the following details Physical Layer devices?",
+      "prompt": "Which of the following details Physical Layer devices?",
       "choices": [
         "Modem, Transceiver, NIC, CAT cabling",
         "Hub, Media Converter, Modem, Transceiver",
@@ -303,7 +303,7 @@
       ]
     },
     {
-      "question": "Which of the following is NOT a Data Link Layer device?",
+      "prompt": "Which of the following is NOT a Data Link Layer device?",
       "choices": [
         "Bridge",
         "NIC",
@@ -319,7 +319,7 @@
       ]
     },
     {
-      "question": "Which of the following details Data Link Layer devices?",
+      "prompt": "Which of the following details Data Link Layer devices?",
       "choices": [
         "Wireless Access Points (APs), Routers, NICs",
         "NICs, Bridges, Media Converters",
@@ -334,7 +334,7 @@
       ]
     },
     {
-      "question": "Which of the following is a Network Layer device?",
+      "prompt": "Which of the following is a Network Layer device?",
       "choices": [
         "Routers",
         "Network Interface Card (NIC)",
@@ -350,7 +350,7 @@
       ]
     },
     {
-      "question": "At which layer of the OSI Model are firewalls implemented?",
+      "prompt": "At which layer of the OSI Model are firewalls implemented?",
       "choices": [
         "Layer 1",
         "Layer 2",
@@ -368,7 +368,7 @@
       ]
     },
     {
-      "question": "At which layer of the OSI Model are port numbers tagged into this layer's PDU?",
+      "prompt": "At which layer of the OSI Model are port numbers tagged into this layer's PDU?",
       "choices": [
         "Layer 1",
         "Layer 2",
@@ -386,7 +386,7 @@
       ]
     },
     {
-      "question": "What is the range of the 'well-known' port numbers (inclusive) that are preassigned by the Internet Assigned Numbers Authority (IANA)?",
+      "prompt": "What is the range of the 'well-known' port numbers (inclusive) that are preassigned by the Internet Assigned Numbers Authority (IANA)?",
       "choices": [
         "0-1023",
         "1-1023",
@@ -403,7 +403,7 @@
       ]
     },
     {
-      "question": "Which of the following are Layer 4 devices?",
+      "prompt": "Which of the following are Layer 4 devices?",
       "choices": [
         "Multi-layer Switches (i.e., load balancers), Next Generation Firewalls (NGFWs), Intrusion Detection Systems (IDSs)",
         "Hubs, Repeaters, Media Converters, Routers",
@@ -417,7 +417,7 @@
       ]
     },
     {
-      "question": "Which of the following is NOT a Layer 4 device?",
+      "prompt": "Which of the following is NOT a Layer 4 device?",
       "choices": [
         "Multi-layer Switches (i.e., load balancers)",
         "Next Generation Firewalls (NGFWs)",
@@ -431,7 +431,7 @@
       ]
     },
     {
-      "question": "Which layer of the OSI model allows for the exchange of multiple messages between a client and a server, and represents functions that administer the process of establishing dialog, managing data transfer, and then ending (or tearing down) the session?",
+      "prompt": "Which layer of the OSI model allows for the exchange of multiple messages between a client and a server, and represents functions that administer the process of establishing dialog, managing data transfer, and then ending (or tearing down) the session?",
       "choices": [
         "Layer 1",
         "Layer 2",
@@ -449,7 +449,7 @@
       ]
     },
     {
-      "question": "Which layer of the OSI model is also know as the end-to-end or host-to-host layer, and can establish a logical connection between the sending host and destination host on an internetwork?",
+      "prompt": "Which layer of the OSI model is also know as the end-to-end or host-to-host layer, and can establish a logical connection between the sending host and destination host on an internetwork?",
       "choices": [
         "Layer 1",
         "Layer 2",
@@ -467,7 +467,7 @@
       ]
     },
     {
-      "question": "In which OSI Layer are TCP (connection-oriented) and UDP (connectionless) communication protocols implemented?",
+      "prompt": "In which OSI Layer are TCP (connection-oriented) and UDP (connectionless) communication protocols implemented?",
       "choices": [
         "Layer 1",
         "Layer 2",
@@ -485,7 +485,7 @@
       ]
     },
     {
-      "question": "Which OSI Layer is responsible for transforming the data between the format required for the network and the format required for the application, such as character set conversion between the American Standard Code for Information Interchange (ASCII) and Unicode?",
+      "prompt": "Which OSI Layer is responsible for transforming the data between the format required for the network and the format required for the application, such as character set conversion between the American Standard Code for Information Interchange (ASCII) and Unicode?",
       "choices": [
         "Layer 1",
         "Layer 2",
@@ -503,7 +503,7 @@
       ]
     },
     {
-      "question": "Which OSI Layer is associated with tasks such as data compression/decompression, and encryption/decryption?",
+      "prompt": "Which OSI Layer is associated with tasks such as data compression/decompression, and encryption/decryption?",
       "choices": [
         "Layer 1",
         "Layer 2",
@@ -521,7 +521,7 @@
       ]
     },
     {
-      "question": "Which OSI Layer doesn't encapsulate any other protocols or provide services to any protocol, and is where users actually communicate or interact with the computer?",
+      "prompt": "Which OSI Layer doesn't encapsulate any other protocols or provide services to any protocol, and is where users actually communicate or interact with the computer?",
       "choices": [
         "Layer 1",
         "Layer 2",
@@ -539,7 +539,7 @@
       ]
     },
     {
-      "question": "At which OSI layer is the concept of a port number introduced?",
+      "prompt": "At which OSI layer is the concept of a port number introduced?",
       "choices": [
         "Layer 1",
         "Layer 2",
@@ -557,7 +557,7 @@
       ]
     },
     {
-      "question": "What Physical Layer device is defined as the part of the network interface that sends and receives signals over the network media?",
+      "prompt": "What Physical Layer device is defined as the part of the network interface that sends and receives signals over the network media?",
       "choices": [
         "Transceiver",
         "Repeater",
@@ -573,7 +573,7 @@
       ]
     },
     {
-      "question": "What Physical Layer device is defined as a device that amplifies an electronic signal to extend the maximum allowable distance for the media type?",
+      "prompt": "What Physical Layer device is defined as a device that amplifies an electronic signal to extend the maximum allowable distance for the media type?",
       "choices": [
         "Transceiver",
         "Repeater",
@@ -588,7 +588,7 @@
       ]
     },
     {
-      "question": "What Physical Layer device is defined as a multi-port repeater, deployed as the central point of connection for nodes?",
+      "prompt": "What Physical Layer device is defined as a multi-port repeater, deployed as the central point of connection for nodes?",
       "choices": [
         "Transceiver",
         "Repeater",
@@ -603,7 +603,7 @@
       ]
     },
     {
-      "question": "What Physical Layer device is defined as a device that converts one media signaling type to another?",
+      "prompt": "What Physical Layer device is defined as a device that converts one media signaling type to another?",
       "choices": [
         "Transceiver",
         "Repeater",
@@ -618,7 +618,7 @@
       ]
     },
     {
-      "question": "What Physical Layer device is defined as a device that performs some type of signal modulation and demodulation, such as sending digital data over an analog line?",
+      "prompt": "What Physical Layer device is defined as a device that performs some type of signal modulation and demodulation, such as sending digital data over an analog line?",
       "choices": [
         "Transceiver",
         "Repeater",
@@ -633,7 +633,7 @@
       ]
     },
     {
-      "question": "What Data Link Layer device is defined as a device that joins an end system host to network media (cabling or wireless) and enables it to communicate over the network by assembling and disassembling frames?",
+      "prompt": "What Data Link Layer device is defined as a device that joins an end system host to network media (cabling or wireless) and enables it to communicate over the network by assembling and disassembling frames?",
       "choices": [
         "NIC",
         "Bridge",
@@ -647,7 +647,7 @@
       ]
     },
     {
-      "question": "What Data Link Layer device is defined as a type of intermediate system that joins physical network segments while minimizing the performance reduction of having more nodes on the same network; it also has multiple ports, where each functions as a network interface?",
+      "prompt": "What Data Link Layer device is defined as a type of intermediate system that joins physical network segments while minimizing the performance reduction of having more nodes on the same network; it also has multiple ports, where each functions as a network interface?",
       "choices": [
         "NIC",
         "Bridge",
@@ -661,7 +661,7 @@
       ]
     },
     {
-      "question": "What Data Link Layer device is defined as an advanced type of bridge with many ports, and creates links between large numbers of nodes more efficiently?",
+      "prompt": "What Data Link Layer device is defined as an advanced type of bridge with many ports, and creates links between large numbers of nodes more efficiently?",
       "choices": [
         "NIC",
         "Bridge",
@@ -675,7 +675,7 @@
       ]
     },
     {
-      "question": "Which Data Link Layer device is defined as allowing nodes with wireless network cards to communicate, and creates a bridge between wireless networks and wired ones?",
+      "prompt": "Which Data Link Layer device is defined as allowing nodes with wireless network cards to communicate, and creates a bridge between wireless networks and wired ones?",
       "choices": [
         "NIC",
         "Bridge",
@@ -686,6 +686,70 @@
       "explanation": "",
       "refs": [
         "The Official CompTIA Network+ Student Guide (N10-008). Pg 6."
+      ]
+    },
+    {
+      "prompt": "Which layer 1 physical connector can be found on a SOHO router that are typically labeled as LAN ports, used to connect to a local cabled network?",
+      "choices": [
+        "RJ-45",
+        "RJ-11",
+        "F-type",
+        "SFP+",
+        "RJ-48c"
+      ],
+      "answer": "RJ-45",
+      "explanation": "The Registered Jack (RJ) is commonly used for Unshielded Twisted Pair (UTP) copper cabling. The RJ-45 connector has four color-coded pairs of wires (8 total), and is mainly used in LANs with short distances (typically up to 100 meters). The RJ-11 connector is a four wire connector used for phones and to connect to a Digital Subscriber Line (DSL) service. The F-type connector is a coaxial connector that is used for cable TV as well as cable modems. Small Form-factor Pluggable (SFP+) is an enhanced compact pluggable optical module transceiver used for both telecommunication and data communications applications. The RJ-48c wiring type is used with a T1 connection, which is a long-distance Wide Area Network (WAN), which is also typically shielded.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 10.",
+        "CompTIA Network+ Study Guide: Exam N10-008, 5th Edition. Pg 65."
+      ]
+    },
+    {
+      "prompt": "Which of the following is NOT a layer 1 function of a SOHO router?",
+      "choices": [
+        "RJ-45 Ports",
+        "Radio antennas",
+        "Modem (RJ-45/RJ-11/F-type connector)",
+        "Ethernet switch"
+      ],
+      "answer": "Ethernet switch",
+      "explanation": "The RJ-45 ports are used to connect to a local cabled network (and some modems). Radio antennas are used to transmit and receive wireless signals. A type of modem is used to connect to the Internet Service Provider's (ISP's) network. Although the RJ-45 jacks are connected internally by an Ethernet switch, the Ethernet switch is a layer 2 function of a SOHO router.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 10-11."
+      ]
+    },
+    {
+      "prompt": "Which layer of the OSI model is the Media Access Control (MAC) address used to identify each host interface connected to a SOHO router?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 2",
+      "explanation": "",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 11."
+      ]
+    },
+    {
+      "prompt": "The Ethernet switch is considered which layer 2 function implemented on a SOHO router?",
+      "choices": [
+        "Layer 1",
+        "Layer 2",
+        "Layer 3",
+        "Layer 4",
+        "Layer 5",
+        "Layer 6",
+        "Layer 7"
+      ],
+      "answer": "Layer 2",
+      "explanation": "The RJ-45 jacks on a SOHO router are connected internally by an Ethernet switch.",
+      "refs": [
+        "The Official CompTIA Network+ Student Guide (N10-008). Pg 11."
       ]
     }
   ]
