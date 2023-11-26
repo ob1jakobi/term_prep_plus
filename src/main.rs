@@ -260,7 +260,7 @@ mod exam {
                 // Get the user's answer; if the user's answer is a valid choice, then the choice
                 // itself (i.e., the element from question.choices) will be returned.
                 let user_answer: String = loop {
-                    let letter_choice: String = Self::input("Enter answer (e.g., 'a', 'b', 'c'): ");
+                    let letter_choice: String = Self::input("Enter answer (e.g., 'a', 'b', 'c' ...): ");
                     let choice_as_index: usize = letter_choice
                         .chars()
                         .next()
@@ -277,12 +277,19 @@ mod exam {
                 } else {
                     println!("{}Incorrect...{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                 }
+
+                // Sleep for a sec so that the user can see the result before adding extra text
+                std::thread::sleep(std::time::Duration::from_secs(1));
+
                 // Only print the explanation if one is provided; self-explanatory questions don't need explanation
                 if !question.explanation.is_empty() {
                     println!("{}Explanation: {}{}", YELLOW_COLOR_CODE, question.explanation, RESET_COLOR_CODE);
                 }
                 // Always print reference(s)
                 println!("{}Reference(s):\n\t{}{}", CYAN_COLOR_CODE, question.refs.join("\n\t"), RESET_COLOR_CODE);
+
+                // Sleep for a sec so that the user can see the result before adding extra text
+                std::thread::sleep(std::time::Duration::from_millis(500));
             }
 
             // Whether or not to play again
