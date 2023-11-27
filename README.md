@@ -57,12 +57,14 @@ Each `Exam` consists of multiple questions, where each `question` has the follow
 
 The user would see the equivalent in their terminal:
 
-<code>What is the capital of France?</code><br>
-<code></code><br>
-<code style="color: teal;">&nbsp;a. Berlin</code><br>
-<code style="color: teal;">&nbsp;b. Paris</code><br>
-<code style="color: teal;">&nbsp;c. London</code><br>
-<code style="color: teal;">&nbsp;d. Rome</code>
+```
+What is the capital of France?
+    a. Berlin
+    b. Paris
+    c. London
+    d. Rome
+Enter answer (e.g., 'a', 'b', 'c' ...): 
+```
 
 
 Details for defining multiple choice questions:
@@ -85,6 +87,12 @@ Details for defining multiple choice questions:
 }
 ```
 
+The user would see the equivalent in their terminal:
+```
+// TODO:
+```
+
+
 Details for defining multiple select questions:
 * Each answer in the `answer` array must match the corresponding choice in `choices`; each answer is case-sensitive.
 * The order of the answers in the `answer` array are irrelevant.
@@ -102,6 +110,12 @@ Details for defining multiple select questions:
    "refs": ["https://man7.org/linux/man-pages/man1/grep.1.html"]
 }
 ```
+
+The user would see the equivalent in their terminal:
+```
+// TODO:
+```
+
 
 Details for defining user entry questions:
 * The first element is positionally important, but the other elements are not and are treated like elements in a set:
