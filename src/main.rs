@@ -42,9 +42,10 @@ mod exam {
     /// The questions that comprise an Exam
     #[derive(Debug, Deserialize, Serialize)]
     pub struct Question {
+        q_type: String,
         prompt: String,
         choices: HashSet<String>,
-        answer: String,
+        answer: Vec<String>,
         explanation: String,
         refs: Vec<String>,
     }
@@ -54,7 +55,8 @@ mod exam {
     /// the Exam struct utilized a Vec<Question>)
     impl PartialEq<Self> for Question {
         fn eq(&self, other: &Self) -> bool {
-            self.prompt == other.prompt
+            self.q_type == other.q_type
+            && self.prompt == other.prompt
             && self.choices == other.choices
             && self.answer == other.answer
             && self.explanation == other.explanation
@@ -65,9 +67,10 @@ mod exam {
 
     impl Hash for Question {
         fn hash<H: Hasher>(&self, state: &mut H) {
+            self.q_type.hash(state);
             self.prompt.hash(state);
             self.choices.iter().for_each(|choice| choice.hash(state));
-            self.answer.hash(state);
+            self.answer.iter().for_each(|ans| ans.hash(state));
             self.explanation.hash(state);
             self.refs.hash(state);
         }
@@ -233,6 +236,85 @@ mod exam {
         /// number of questions correctly answered to the number of questions studied will be
         /// displayed.
         pub fn study(&self) {
+            // Counts the number of questions the user answers correctly
+            let mut num_correct = 0;
+
+            // Display the exam the user selected to study
+            println!("\n\n{}Exam selected: {}{}", GREEN_COLOR_CODE, &self.name, RESET_COLOR_CODE);
+
+            // Ask the user for desired number of questions and save result
+            let num_questions: usize = loop {
+                match Self::input("How many questions would you like to review? ").parse::<usize>() {
+                    Ok(num) if num > 0 => break min(num, self.questions.len()),
+                    _ => eprintln!("{}Please enter a positive number!{}", RED_COLOR_CODE, RESET_COLOR_CODE),
+                }
+            };
+
+            // Iterate over the number of questions the user specified
+            for question in self.questions.iter().take(num_questions) {
+                // Display the question prompt
+                println!("\n{}", question.prompt);
+
+                // logic depends on question type
+                match question.q_type.as_ref() {
+                    "mc" => {
+                        // Convert question.choices to a vector for easy indexing with side effect
+                        // Of printing the choice with a letter prefix that the user can use for their answer
+                        let choices: Vec<String> = question.choices
+                            .iter()
+                            .enumerate()
+                            .map(|(index, choice)| {
+                                println!("{}\t{}.) {}{}", BLUE_COLOR_CODE, (index as u8 + b'a') as char, choice, RESET_COLOR_CODE);
+                                choice.to_string()
+                            })
+                            .collect();
+
+                        // Get the user's answer based on the letter prefix printed above
+                        let user_answer: String = loop {
+                            let letter_choice: String = Self::input("Enter answer (e.g., 'a', 'b', 'c', ...): ");
+                            let choice_as_index: usize = letter_choice
+                                .chars()
+                                .next()
+                                .map_or(usize::MAX, |c| (c as u8 - b'a') as usize);
+                            match choices.get(choice_as_index) {
+                                Some(choice) => break choice.to_string(),
+                                None => eprintln!("{}Please pick a valid answer!{}", RED_COLOR_CODE, RESET_COLOR_CODE),
+                            }
+                        };
+
+                        // Let the user know if they've answered correctly; if so, increment num_correct
+                        if user_answer.eq(&question.answer.get(0).unwrap_or("".as_ref())) {
+                            println!("{}Correct!{}", GREEN_COLOR_CODE, RESET_COLOR_CODE);
+                            num_correct += 1;
+                        } else {
+                            println!("{}Incorrect...{}", RED_COLOR_CODE, RESET_COLOR_CODE);
+                        }
+                    },
+                    "ms" => {
+                        // TODO:
+                    },
+                    "ue" => {
+                        // TODO:
+                    },
+                    _ => panic!("{}q_type field not recognized{}", RED_COLOR_CODE, RESET_COLOR_CODE),
+                }
+
+                // Sleep for a sec so that the user can see the result before adding extra text
+                std::thread::sleep(std::time::Duration::from_secs(1));
+            }
+
+            // Ask whether or not to play again
+            match Self::input("\n\nPlay again (Y/n)? ").chars().next().unwrap_or('n') {
+                'y' | 'Y' => self.study(),
+                _ => {
+                    println!("\nYou got {}/{} questions correct.", num_correct, num_questions);
+                    println!("Great progress studying!");
+                }
+            }
+        }
+
+        /*
+        pub fn study(&self) {
             // For identifying the user's number of correct answers
             let mut num_correct: u8 = 0;
             println!("\n\n{}Exam selected: {}{}", GREEN_COLOR_CODE, &self.name, RESET_COLOR_CODE);
@@ -301,6 +383,7 @@ mod exam {
                 }
             }
         }
+        */
     }
 
 }
