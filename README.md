@@ -6,6 +6,8 @@ The subdirectory `assets` is the location where the JSON files should be stored 
 This program will attempt to create an assets directory if none exists prior to its initial
 execution.
 
+---
+
 ## Format of JSON Study Files
 There are two `structs` that are used in the program:
 * `Exam` - the high-level exam that the user is studying for.
@@ -84,3 +86,10 @@ Each `Exam` consists of multiple questions, where each `question` has the follow
   ]
 }
 ```
+
+---
+## Example User Experience
+
+The below section displays what the user will see when they run the program.
+
+![Example usage of the term_prep_plus program in the terminal](assets/term_prep_plus_usage_example.png)
