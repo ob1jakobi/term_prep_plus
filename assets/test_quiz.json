@@ -19,81 +19,17 @@
     },
     {
       "q_type": "ue",
-      "prompt": "User entry question prompt; enter 'command option arg other1 other2'",
-      "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
+      "prompt": "User entry question WITH HINTS prompt; correct 'command option arg other1 other2'",
+      "choices": ["This is a hint", "This is another hint"],
+      "answer": ["command option arg other1 other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
     },
     {
       "q_type": "ue",
-      "prompt": "User entry question prompt; enter 'command option arg other2 other1'",
+      "prompt": "User entry question; correct is 'command arg other1' or 'command other1 arg'",
       "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
-      "explanation": "Because I said so...",
-      "refs": ["ref1", "ref2"]
-    },
-    {
-      "q_type": "ue",
-      "prompt": "User entry question prompt; enter 'command other1 option arg other2'",
-      "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
-      "explanation": "Because I said so...",
-      "refs": ["ref1", "ref2"]
-    },
-    {
-      "q_type": "ue",
-      "prompt": "User entry question prompt; enter 'command other1 other2 option arg'",
-      "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
-      "explanation": "Because I said so...",
-      "refs": ["ref1", "ref2"]
-    },
-    {
-      "q_type": "ue",
-      "prompt": "User entry question prompt; enter 'command other2 other1 option arg'",
-      "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
-      "explanation": "Because I said so...",
-      "refs": ["ref1", "ref2"]
-    },
-    {
-      "q_type": "ue",
-      "prompt": "User entry question prompt; enter 'command other2 option arg other1'",
-      "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
-      "explanation": "Because I said so...",
-      "refs": ["ref1", "ref2"]
-    },
-    {
-      "q_type": "ue",
-      "prompt": "User entry question prompt; negative test, enter ''",
-      "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
-      "explanation": "Because I said so...",
-      "refs": ["ref1", "ref2"]
-    },
-    {
-      "q_type": "ue",
-      "prompt": "User entry question prompt; negative test, enter 'blah'",
-      "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
-      "explanation": "Because I said so...",
-      "refs": ["ref1", "ref2"]
-    },
-    {
-      "q_type": "ue",
-      "prompt": "User entry question prompt; negative test, enter 'option arg command other1 other2'",
-      "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
-      "explanation": "Because I said so...",
-      "refs": ["ref1", "ref2"]
-    },
-    {
-      "q_type": "ue",
-      "prompt": "User entry question prompt; negative test, enter 'command option arg other1 other2 other3'",
-      "choices": [""],
-      "answer": ["command", "option arg", "other1", "other2"],
+      "answer": ["command arg other1", "command other1 arg"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
     }
