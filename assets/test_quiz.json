@@ -3,7 +3,7 @@
   "questions": [
     {
       "q_type": "mc",
-      "prompt": "Multiple choice question prompt",
+      "prompt": "Multiple choice question prompt. 'Choice 2' is correct.",
       "choices": ["Choice 1", "Choice 2", "Choice 3", "Choice 4"],
       "answer": ["Choice 2"],
       "explanation": "Because I said so...",
@@ -11,7 +11,7 @@
     },
     {
       "q_type": "ms",
-      "prompt": "Multiple select question prompt",
+      "prompt": "Multiple select question prompt. 'Choice 3' and 'Choice 4' are correct.",
       "choices": ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"],
       "answer": ["Choice 3", "Choice 4"],
       "explanation": "Because I said so...",
@@ -20,7 +20,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; enter 'command option arg other1 other2'",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
@@ -28,7 +28,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; enter 'command option arg other2 other1'",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
@@ -36,7 +36,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; enter 'command other1 option arg other2'",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
@@ -44,7 +44,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; enter 'command other1 other2 option arg'",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
@@ -52,7 +52,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; enter 'command other2 other1 option arg'",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
@@ -60,7 +60,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; enter 'command other2 option arg other1'",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
@@ -68,7 +68,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; negative test, enter ''",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
@@ -76,7 +76,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; negative test, enter 'blah'",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
@@ -84,7 +84,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; negative test, enter 'option arg command other1 other2'",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]
@@ -92,7 +92,7 @@
     {
       "q_type": "ue",
       "prompt": "User entry question prompt; negative test, enter 'command option arg other1 other2 other3'",
-      "choices": "",
+      "choices": [""],
       "answer": ["command", "option arg", "other1", "other2"],
       "explanation": "Because I said so...",
       "refs": ["ref1", "ref2"]

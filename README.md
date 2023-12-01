@@ -122,11 +122,14 @@ Details for defining multiple select questions:
 ---
 #### Example User Entry Question
 
+##### User Entry Without Hints
+This first example shows a user entry question where there are no hints provided.
+
 ```json
 {
   "q_type": "ue",
   "prompt": "Using short option(s) only, how can you use grep command to perform a case-insensitive search for the user 'john' in the file named 'user_info.txt'?",
-  "choices": "",
+  "choices": [""],
   "answer": [
     "grep",
     "-i john",
@@ -139,13 +142,42 @@ Details for defining multiple select questions:
 }
 ```
 
-The user would see the equivalent in their terminal:
+The user would see the equivalent in their terminal; `choices` displays no hints:
+```
+// TODO:
+```
+
+##### User Entry With Hints
+
+
+```json
+{
+  "q_type": "ue",
+  "prompt": "Using short option(s) only, how can you use grep command to perform a case-insensitive search for the user 'john' in the file named 'user_info.txt'?",
+  "choices": ["'--ignore-case' is the long option"],
+  "answer": [
+    "grep",
+    "-i john",
+    "user_info.txt"
+  ],
+  "explanation": "To search the file 'user_info.txt' for the case-insensitive variations of the string 'john', you would use the grep command, the name of the file to search, and the '-i' option (as opposed to the long option '--ignore-case') with the argument 'john'.",
+  "refs": [
+    "https://man7.org/linux/man-pages/man1/grep.1.html"
+  ]
+}
+```
+
+Here is an alternative example where the `choices` array can displays hints (if the user wants):
 ```
 // TODO:
 ```
 
 
+
 Details for defining user entry questions:
+* The `choices` array is used for providing hints.
+  * Any entries provided will be displayed as hints.
+  * If no hints are desired, enter an array with a single empty string as an element.
 * The first element is positionally important, but the other elements are not and are treated like elements in a set:
   * For the above example, the position of the first element `"grep"` indicates that it must be the first thing entered
     by the user.
