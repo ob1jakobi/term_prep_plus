@@ -32,6 +32,8 @@ mod exam {
     const YELLOW_COLOR_CODE: &str = "\x1b[33m";
     const CYAN_COLOR_CODE: &str = "\x1b[36m";
     const RESET_COLOR_CODE: &str = "\x1b[0m";
+    const START_ITALICS: &str = "\x1B[3m";
+    const END_ITALICS: &str = "\x1B[23m";
 
     /// High-level structure representing an Exam; has a name and a series of questions
     #[derive(Debug, Deserialize, Serialize)]
@@ -237,6 +239,12 @@ mod exam {
         /// the exam file will be studied. After the study session has completed, a ratio of the
         /// number of questions correctly answered to the number of questions studied will be
         /// displayed.
+        ///
+        /// # Panics
+        /// if the JSON file that was chosen doesn't match one of the 3 allowable `q_type` variations
+        /// * `mc` - for multiple choice questions
+        /// * `ms` - for multiple select questions
+        /// * `ue` - for user entry
         pub fn study(&self) {
             // Counts the number of questions the user answers correctly
             let mut num_correct = 0;
@@ -260,16 +268,7 @@ mod exam {
                 // logic depends on question type
                 match question.q_type.as_ref() {
                     "mc" => {
-                        // Convert question.choices to a vector for easy indexing with side effect
-                        // Of printing the choice with a letter prefix that the user can use for their answer
-                        let choices: Vec<String> = question.choices
-                            .iter()
-                            .enumerate()
-                            .map(|(index, choice)| {
-                                println!("{}\t{}.) {}{}", BLUE_COLOR_CODE, (index as u8 + b'a') as char, choice, RESET_COLOR_CODE);
-                                choice.to_string()
-                            })
-                            .collect();
+                        let choices = Self::display_choices_and_collect(question);
 
                         // Get the user's answer based on the letter prefix printed above
                         let user_answer: String = loop {
@@ -284,33 +283,94 @@ mod exam {
                             }
                         };
 
-                        // Let the user know if they've answered correctly; if so, increment num_correct
-                        let correct_ans: &str = match question.answer.get(0) {
-                            Some(ans) => ans.as_str(),
-                            _ => "",
+                        // Get the correct answer from the vector and print out user's result
+                        match question.answer.get(0) {
+                            Some(correct_ans) if user_answer.eq(correct_ans.as_str()) => {
+                                println!("{}Correct!{}", GREEN_COLOR_CODE, RESET_COLOR_CODE);
+                                num_correct += 1;
+                            },
+                            _ => {
+                                println!("{}Incorrect...{}", RED_COLOR_CODE, RESET_COLOR_CODE);
+                                println!("{}The correct answer(s): {:#?}{}", YELLOW_COLOR_CODE, question.answer, RESET_COLOR_CODE);
+                            },
+
+                        }
+                    },
+                    "ms" => {
+                        let choices = Self::display_choices_and_collect(question);
+                        // Get the user's multiple select answer(s)
+                        let mut user_sel = loop {
+                            let mut has_bad_input = false;
+                            let prompt = "Enter comma-separated answer (e.g., 'a, b', or 'c'): ";
+                            let user_ans = Self::input(prompt).split(", ").filter_map(|choice| {
+                                match choice.chars().next().map_or(usize::MAX, |c| (c as u8 - b'a') as usize) {
+                                    num if choices.get(num).is_none() => {
+                                        eprintln!("{}Please enter a valid selection from available choices{}", RED_COLOR_CODE, RESET_COLOR_CODE);
+                                        has_bad_input = true;
+                                        None
+                                    },
+                                    num => choices.get(num),
+                                }
+                            })
+                                .collect::<HashSet<&String>>();
+                            if !has_bad_input {
+                                break user_ans
+                            }
                         };
-                        if user_answer.eq(correct_ans) {
+                        // If # of user choices != number of answer, then it's incorrect
+                        if user_sel.len() == question.answer.len() {
+                            // Iterate over correct answers, removing each from user's choices
+                            for ans in question.answer.iter() {
+                                user_sel.remove(ans);
+                            }
+                        }
+                        // If user answered correctly, then the HashSet should've had all items removed
+                        if user_sel.is_empty() {
                             println!("{}Correct!{}", GREEN_COLOR_CODE, RESET_COLOR_CODE);
                             num_correct += 1;
                         } else {
                             println!("{}Incorrect...{}", RED_COLOR_CODE, RESET_COLOR_CODE);
+                            println!("{}The correct answer(s): {:#?}{}", YELLOW_COLOR_CODE, question.answer, RESET_COLOR_CODE);
                         }
                     },
-                    "ms" => {
-                        // Convert question.choices to a vector for easy indexing with side effect
-                        // Of printing the choice with a letter prefix that the user can use for their answer
-                        let choices: Vec<String> = question.choices
-                            .iter()
-                            .enumerate()
-                            .map(|(index, choice)| {
-                                println!("{}\t{}.) {}{}", BLUE_COLOR_CODE, (index as u8 + b'a') as char, choice, RESET_COLOR_CODE);
-                                choice.to_string()
-                            })
-                            .collect();
-                        // TODO: get the user's choices/selections, test if they're the answer
-                    },
                     "ue" => {
-                        // TODO: display hint(s) from choices array (if any)
+                        // Collect the hint(s), if any
+                        let hints = Self::display_choices_and_collect(question);
+                        // Get the user's input; display prompt and show hint(s), if available
+                        let user_ans: String = loop {
+                            match hints.len() {
+                                num if num > 0 => {
+                                    let input = Self::input("Enter your answer (or enter 'hint' to see hints): ");
+                                    if input.eq_ignore_ascii_case("hint") {
+                                        Self::display_hints(&hints);
+                                    } else {
+                                        break input
+                                    }
+                                },
+                                _ => {
+                                    let input = Self::input("Enter your answer: ");
+                                    if input.eq_ignore_ascii_case("hint") {
+                                        eprintln!("{}This question doesn't have any hints...{}", RED_COLOR_CODE, RESET_COLOR_CODE);
+                                    } else {
+                                        break input
+                                    }
+                                }
+                            }
+                        };
+                        let mut is_correct = false;
+                        for answer in question.answer.iter() {
+                            if user_ans.eq(answer) {
+                                is_correct = true;
+                                break;
+                            }
+                        }
+                        if is_correct {
+                            println!("{}Correct!{}", GREEN_COLOR_CODE, RESET_COLOR_CODE);
+                            num_correct += 1;
+                        } else {
+                            println!("{}Incorrect...{}", RED_COLOR_CODE, RESET_COLOR_CODE);
+                            println!("{}The correct answer(s): {:#?}{}", YELLOW_COLOR_CODE, question.answer, RESET_COLOR_CODE);
+                        }
                     },
                     _ => panic!("{}q_type field not recognized{}", RED_COLOR_CODE, RESET_COLOR_CODE),
                 }
@@ -338,79 +398,35 @@ mod exam {
             }
         }
 
-        /*
-        pub fn study(&self) {
-            // For identifying the user's number of correct answers
-            let mut num_correct: u8 = 0;
-            println!("\n\n{}Exam selected: {}{}", GREEN_COLOR_CODE, &self.name, RESET_COLOR_CODE);
-            // Get the number of questions to study; ensures value range is [1, self.questions.len)
-            let num_questions: usize = loop {
-                match Self::input("How many questions would you like to review? ").parse::<usize>() {
-                    Ok(num) if num > 0 => break min(num, self.questions.len()),
-                    _ => eprintln!("{}Please enter a positive number!{}", RED_COLOR_CODE, RESET_COLOR_CODE),
-                }
-            };
-            // Iterate over questions in range specified by user.
-            for question in self.questions.iter().take(num_questions) {
-                // Display the question prompt so the user knows the question to answer
-                println!("\n{}", question.prompt);
-                // Covert question.choices to vector for easy indexing; side effect of printing the
-                // choice with a letter prefix so the user can use the prefix to select their answer
-                let choices: Vec<String> = question.choices
-                    .iter()
-                    .enumerate()
-                    .map(|(index, choice)| {
-                        println!("{}\t{}.) {}{}", BLUE_COLOR_CODE, (index as u8 + b'a') as char, choice, RESET_COLOR_CODE);
-                        choice.to_string()
-                    })
-                    .collect();
-                // Get the user's answer; if the user's answer is a valid choice, then the choice
-                // itself (i.e., the element from question.choices) will be returned.
-                let user_answer: String = loop {
-                    let letter_choice: String = Self::input("Enter answer (e.g., 'a', 'b', 'c' ...): ");
-                    let choice_as_index: usize = letter_choice
-                        .chars()
-                        .next()
-                        .map_or(usize::MAX, |c| (c as u8 - b'a') as usize);
-                    match choices.get(choice_as_index) {
-                        Some(choice) => break choice.to_string(),
-                        None => eprintln!("{}Please pick a valid answer!{}", RED_COLOR_CODE, RESET_COLOR_CODE),
-                    }
-                };
-                // Let the user know if they've answered correctly; if so, increment num_correct
-                if user_answer.eq(&question.answer) {
-                    println!("{}Correct!{}", GREEN_COLOR_CODE, RESET_COLOR_CODE);
-                    num_correct += 1;
-                } else {
-                    println!("{}Incorrect...{}", RED_COLOR_CODE, RESET_COLOR_CODE);
-                }
-
-                // Sleep for a sec so that the user can see the result before adding extra text
-                std::thread::sleep(std::time::Duration::from_secs(1));
-
-                // Only print the explanation if one is provided; self-explanatory questions don't need explanation
-                if !question.explanation.is_empty() {
-                    println!("{}Explanation: {}{}", YELLOW_COLOR_CODE, question.explanation, RESET_COLOR_CODE);
-                }
-                // Always print reference(s)
-                println!("{}Reference(s):\n\t{}{}", CYAN_COLOR_CODE, question.refs.join("\n\t"), RESET_COLOR_CODE);
-
-                // Sleep for a sec so that the user can see the result before adding extra text
-                std::thread::sleep(std::time::Duration::from_millis(500));
-            }
-
-            // Whether or not to play again
-            match Self::input("\n\nPlay again (Y/n)? ").chars().next().unwrap_or('n') {
-                'y' | 'Y' => self.study(),
-                _ => {
-                    println!("\nYou got {}/{} questions correct.", num_correct, num_questions);
-                    println!("Great progress studying!");
-                }
-            }
+        /// Helper function for displaying hints for user entry questions.
+        fn display_hints(hints_ref: &Vec<String>) {
+            hints_ref.iter().for_each(|hint| {
+                println!("{}\t{}Hint: {}{}{}", BLUE_COLOR_CODE, START_ITALICS, hint, END_ITALICS, RESET_COLOR_CODE);
+            })
         }
-        */
-    }
 
+        /// Helper function that iterates over the `choices` field of the parameter `Question`.
+        /// The way a choice/option will be displayed depends on the `q_type` field.
+        fn display_choices_and_collect(question_ref: &Question) -> Vec<String> {
+            question_ref.choices.iter().enumerate().filter_map(|(index, choice)| {
+                match question_ref.q_type.as_str() {
+                    "mc" | "ms" => {
+                        println!("{}\t{}.) {}{}", BLUE_COLOR_CODE, (index as u8 + b'a') as char, choice, RESET_COLOR_CODE);
+                        Some(choice.to_string())
+                    },
+                    "ue" if !choice.is_empty() => {
+                        // Don't print hint(s) - let the user decide
+                        Some(choice.to_string())
+                    },
+                    _ => {
+                        // Executes if there's no hints provided for ue questions
+                        None
+                    },
+                }
+            })
+                .collect()
+        }
+    }
 }
 
 fn main() {

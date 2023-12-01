@@ -39,8 +39,7 @@ Each `Exam` consists of multiple questions, where each `question` has the follow
 * `prompt` - the question to be answered;
 * `choices` - options for answering the question correctly; there can be any number of choices, but preferably &le; 26 because
    each choice is prefixed with a letter;
-* `answer` - the correct answer to the question as an array. The format for the answer depends on the question `q_type`;
-  however, the first answer is always considered to be required.
+* `answer` - the correct answer(s) to the question as an array.
 * `explanation` - an optional, more detailed explanation of the answer; used to provide additional insight; leave as an
    empty string if no explanation is desired/needed.
 * `refs` - or list of references so the user can refer to those if they get it incorrect.
@@ -74,7 +73,7 @@ What is the capital of France?
     b. Paris
     c. London
     d. Rome
-Enter answer (e.g., 'a', 'b', 'c' ...): 
+Enter answer (e.g., 'a', 'b', 'c', ...): 
 ```
 
 
@@ -111,7 +110,13 @@ Details for defining multiple choice questions:
 
 The user would see the equivalent in their terminal:
 ```
-// TODO:
+Which of the following are states in the United States?
+    a. Wyoming
+    b. Hawaii
+    c. Puerto Rico
+    d. Alaska
+    e. Miami
+Enter comma-separated answer (e.g., 'a, b', or 'c'): 
 ```
 
 
@@ -128,12 +133,12 @@ This first example shows a user entry question where there are no hints provided
 ```json
 {
   "q_type": "ue",
-  "prompt": "Using short option(s) only, how can you use grep command to perform a case-insensitive search for the user 'john' in the file named 'user_info.txt'?",
+  "prompt": "Using short option(s) only, how can you use the grep command to perform a case-insensitive search for the user 'john' in the file named 'user_info.txt'?",
   "choices": [""],
   "answer": [
-    "grep",
-    "-i john",
-    "user_info.txt"
+    "grep -i john user_info.txt",
+    "grep john test.txt -i",
+    "grep john -i test.txt"
   ],
   "explanation": "To search the file 'user_info.txt' for the case-insensitive variations of the string 'john', you would use the grep command, the name of the file to search, and the '-i' option (as opposed to the long option '--ignore-case') with the argument 'john'.",
   "refs": [
@@ -144,7 +149,9 @@ This first example shows a user entry question where there are no hints provided
 
 The user would see the equivalent in their terminal; `choices` displays no hints:
 ```
-// TODO:
+Using short option(s) only, how can you use the grep command to perform a case-sensitve search for the user 'john' in
+the file named 'user_info.txt'?
+Enter your answer: 
 ```
 
 ##### User Entry With Hints
@@ -153,12 +160,12 @@ The user would see the equivalent in their terminal; `choices` displays no hints
 ```json
 {
   "q_type": "ue",
-  "prompt": "Using short option(s) only, how can you use grep command to perform a case-insensitive search for the user 'john' in the file named 'user_info.txt'?",
+  "prompt": "Using short option(s) only, how can you use the grep command to perform a case-insensitive search for the user 'john' in the file named 'user_info.txt'?",
   "choices": ["'--ignore-case' is the long option"],
   "answer": [
-    "grep",
-    "-i john",
-    "user_info.txt"
+    "grep -i john user_info.txt",
+    "grep john test.txt -i",
+    "grep john -i test.txt"
   ],
   "explanation": "To search the file 'user_info.txt' for the case-insensitive variations of the string 'john', you would use the grep command, the name of the file to search, and the '-i' option (as opposed to the long option '--ignore-case') with the argument 'john'.",
   "refs": [
@@ -169,7 +176,11 @@ The user would see the equivalent in their terminal; `choices` displays no hints
 
 Here is an alternative example where the `choices` array can displays hints (if the user wants):
 ```
-// TODO:
+Using short option(s) only, how can you use the grep command to perform a case-sensitve search for the user 'john' in
+the file named 'user_info.txt'?
+Enter your answer (or enter 'hint' to see hints): hint
+    Hint: '--ignore-case' is the long option
+Enter your answer (or enter 'hint' to see hints): 
 ```
 
 
@@ -178,20 +189,7 @@ Details for defining user entry questions:
 * The `choices` array is used for providing hints.
   * Any entries provided will be displayed as hints.
   * If no hints are desired, enter an array with a single empty string as an element.
-* The first element is positionally important, but the other elements are not and are treated like elements in a set:
-  * For the above example, the position of the first element `"grep"` indicates that it must be the first thing entered
-    by the user.
-  * If the user of the program enters their response, based on the above example, either of the following entries would
-    be considered correct:
-    * "grep -i john user_info.txt"
-    * "grep user_info.txt -i john"
-* Entries (other than the first entry) which require a specific positional arrangement should be combined into a single
-  element.
-  * In the above example, if `"ping"` was required to be followed up with `"-i john user_info.txt"`, then you should
-    either combine them so they look like either of the below:
-    * `["grep -i john user_info.txt"]`
-    * `["grep", "-i john user_info.txt"]`
-* 
+* The entries in the `answer` array should encompass all possible answers the user could enter.
 
 ---
 ### Example JSON file
@@ -259,11 +257,10 @@ Details for defining user entry questions:
     {
       "q_type": "ue",
       "prompt": "On a Linux machine, using only short options (if needed), how would you use the ping command to issue only 4 ICMP ECHO_REQUEST packets to the address at 68.65.121.157?",
-      "choices": "",
+      "choices": ["Do Linux machines have a default pint count?"],
       "answer": [
-        "ping",
-        "68.65.121.157",
-        "-c 4"
+        "ping 68.65.121.157 -c 4",
+        "ping -c 4 68.65.121.157"
       ],
       "explanation": "Unlike on a Windows machine (which defaults to 4 ICMP ECHO_RESPONSE packets), the Linux version of the ping command continuously issues ICMP ECHO-REQUEST packets to the given address until stopped with SIGINT (CTRL+C); instead, you have to use the '-c' option with an argument corresponding to the total number of messages you want to send. Although the question provided the address as an IPv4 address, there was no specification for forcing the ping command to force/limit the solution exclusively to IPv4 addresses via the -4 option; using the -4 option has no affect on the result of this question and can be omitted entirely.",
       "refs": [
