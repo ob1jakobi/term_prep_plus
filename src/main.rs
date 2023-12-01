@@ -1,3 +1,4 @@
+use std::process::exit;
 use crate::exam::Exam;
 
 const LOGO: &str = "
@@ -80,7 +81,7 @@ mod exam {
         /// Attempts to create an Exam if an exam JSON file exists and is properly formatted.
         pub fn new() -> Option<Self> {
             match env::current_dir() {
-                Ok(cwd) if Self::create_asset_dir(&cwd) => Self::get_exam(&cwd),
+                Ok(cwd) if Self::create_asset_dir(&cwd) => Some(Self::get_exam(&cwd)),
                 _ => {
                     eprintln!("{}Unable to create Exam{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                     None
@@ -121,28 +122,29 @@ mod exam {
 
         /// Gets the appropriate exam directory from the user for the study session, attempts to
         /// get the appropriate `Exam` via an `Option` depending on whether the JSON file exists.
-        fn get_exam(cwd: &PathBuf) -> Option<Exam> {
-            let result: Option<Exam> = loop {
-                let asset_dir: PathBuf = Self::select_asset_directory(cwd);
-                match Self::display_and_collect_available_exams(asset_dir) {
+        fn get_exam(cwd: &PathBuf) -> Exam {
+            let result: Exam = loop {
+                let assets_dir: PathBuf = Self::select_asset_directory(cwd);
+                match Self::display_and_collect_available_exams(assets_dir) {
                     Some(empty_dir) if empty_dir.is_empty() => {
                         eprintln!("{}There are no available exam files in chosen directory{}", RED_COLOR_CODE, RESET_COLOR_CODE);
                     },
                     Some(exam_dir) => {
-                        let usr_choice_prefix: usize = loop {
-                            match Self::input("Enter the exam file number (e.g., '1', '2', '3'): ").parse::<usize>() {
-                                Ok(valid_index) if valid_index > 0 && valid_index <= exam_dir.len() => break valid_index - 1,
+                        // Get the appropriate exam from the list provided
+                        let exam_path = loop {
+                            let prompt = "Enter the exam number (e.g., '1', '2', '3', ...): ";
+                            let index = Self::input(prompt).parse::<usize>().unwrap_or(usize::MAX) - 1;
+                            match exam_dir.get(index) {
+                                Some(exam) => break exam,
                                 _ => eprintln!("{}Please make a valid selection!{}", RED_COLOR_CODE, RESET_COLOR_CODE),
                             }
                         };
-                        let exam_file_path: Option<&PathBuf> = exam_dir.get(usr_choice_prefix);
-                        if exam_file_path.is_none() {
-                            eprintln!("{}Unable to extract exam file for chosen exam{}", RED_COLOR_CODE, RESET_COLOR_CODE);
-                        } else if let Ok(exam_file) = File::open(exam_file_path.unwrap()) {
-                            let reader: BufReader<File> = BufReader::new(exam_file);
+                        // Open the file and attempt to parse the contents into an exam
+                        if let Ok(exam_file) = File::open(exam_path) {
+                            let reader = BufReader::new(exam_file);
                             match serde_json::from_reader(reader) {
-                                Ok(exam) => break Some(exam),
-                                Err(_) => eprintln!("{}Unable to parse JSON file{}", RED_COLOR_CODE, RESET_COLOR_CODE),
+                                Ok(exam) => break exam,
+                                Err(e) => eprintln!("{}Unable to parse JSON file:\t{}{}", RED_COLOR_CODE, e, RESET_COLOR_CODE),
                             }
                         } else {
                             eprintln!("{}Unable to open selected exam{}", RED_COLOR_CODE, RESET_COLOR_CODE);
@@ -283,7 +285,11 @@ mod exam {
                         };
 
                         // Let the user know if they've answered correctly; if so, increment num_correct
-                        if user_answer.eq(&question.answer.get(0).unwrap_or("".as_ref())) {
+                        let correct_ans: &str = match question.answer.get(0) {
+                            Some(ans) => ans.as_str(),
+                            _ => "",
+                        };
+                        if user_answer.eq(correct_ans) {
                             println!("{}Correct!{}", GREEN_COLOR_CODE, RESET_COLOR_CODE);
                             num_correct += 1;
                         } else {
@@ -291,15 +297,34 @@ mod exam {
                         }
                     },
                     "ms" => {
-                        // TODO:
+                        // Convert question.choices to a vector for easy indexing with side effect
+                        // Of printing the choice with a letter prefix that the user can use for their answer
+                        let choices: Vec<String> = question.choices
+                            .iter()
+                            .enumerate()
+                            .map(|(index, choice)| {
+                                println!("{}\t{}.) {}{}", BLUE_COLOR_CODE, (index as u8 + b'a') as char, choice, RESET_COLOR_CODE);
+                                choice.to_string()
+                            })
+                            .collect();
+                        // TODO: get the user's choices/selections, test if they're the answer
                     },
                     "ue" => {
-                        // TODO:
+                        // TODO: display hint(s) from choices array (if any)
                     },
                     _ => panic!("{}q_type field not recognized{}", RED_COLOR_CODE, RESET_COLOR_CODE),
                 }
+                // Sleep for a bit so that the user can see the result before adding extra text
+                std::thread::sleep(std::time::Duration::from_millis(500));
 
-                // Sleep for a sec so that the user can see the result before adding extra text
+                // Only print the explanation if one is provided; self-explanatory questions don't need explanation
+                if !question.explanation.is_empty() {
+                    println!("{}Explanation: {}{}", YELLOW_COLOR_CODE, question.explanation, RESET_COLOR_CODE);
+                }
+                // Always print reference(s)
+                println!("{}Reference(s):\n\t{}{}", CYAN_COLOR_CODE, question.refs.join("\n\t"), RESET_COLOR_CODE);
+
+                // Sleep for a sec so that the user can see explanation & references
                 std::thread::sleep(std::time::Duration::from_secs(1));
             }
 
@@ -393,6 +418,7 @@ fn main() {
     if let Some(exam) = Exam::new() {
         exam.study();
     } else {
-        println!("Unable to study...");
+        eprintln!("Unable to study today...");
+        exit(1);
     }
 }
